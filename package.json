@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.30.2",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
+  },
+  "dependencies": {
+    "@fancyapps/fancybox": "^3.5.7",
+    "@fortawesome/fontawesome-free": "^5.13.1",
+    "bootstrap": "^4.5.0",
+    "copy-webpack-plugin": "^6.0.2",
+    "fontawesome": "^5.6.3",
+    "github-calendar": "^2.2.1",
+    "jquery": "^3.5.1",
+    "jquery-focus-exit": "^1.0.1",
+    "jquery-focus-flyout": "^0.0.5",
+    "jquery-hover-flyout": "^0.0.5",
+    "jquery-mouse-exit": "^1.0.1",
+    "jquery-next-id": "^1.0.1",
+    "jquery-rss": "^4.3.0",
+    "jquery-tooltip": "^0.2.1",
+    "net": "^1.0.2",
+    "popper.js": "^1.16.1",
+    "rijs": "^0.9.1",
+    "rijs.npm": "^2.0.0",
+    "tls": "^0.0.1"
+  }
+}
