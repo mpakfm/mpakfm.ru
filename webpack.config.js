@@ -21,11 +21,7 @@ Encore
     /**/
     .autoProvidejQuery()
     /**/
-    /*
-    .addPlugin(new CopyWebpackPlugin([
-        { from: './assets/dist/images', to: 'images' }
-    ]))
-    */
+    .enableVersioning()
     .addPlugin(new CopyWebpackPlugin({
         patterns: [
             { from: './assets/dist/images', to: 'images' }
