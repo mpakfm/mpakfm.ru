@@ -2,7 +2,7 @@
 <html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Добро пожаловать!{% endblock %}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
@@ -13,24 +13,7 @@
 
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
-        <!-- FontAwesome JS -->
-        <script defer src="/assets/fontawesome/js/all.js"></script>
-
-        <!-- Global CSS -->
-        <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
-
-        <!-- github calendar css -->
-        <link rel="stylesheet" href="/assets/plugins/github-calendar/dist/github-calendar.css">
-        <!-- github activity css -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
-        <link rel="stylesheet" href="/assets/plugins/github-activity/github-activity-0.1.5.min.css">
-        <!-- fancybox css -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
-        <!-- Theme CSS -->
-        <link id="theme-style" rel="stylesheet" href="/assets/css/styles.css">
-
+        <link href="{{ asset('build/styles.css') }}" rel="stylesheet" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -45,19 +28,7 @@
         {% block body %}{% endblock %}
 
         <!-- Javascript -->
-        <script type="text/javascript" src="/assets/plugins/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="/assets/plugins/popper.min.js"></script>
-        <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/assets/plugins/jquery-rss/dist/jquery.rss.min.js"></script>
-        <!-- github calendar plugin -->
-        <script type="text/javascript" src="/assets/plugins/github-calendar/dist/github-calendar.min.js"></script>
-        <!-- github activity plugin -->
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
-        <script type="text/javascript" src="/assets/plugins/github-activity/github-activity-0.1.5.min.js"></script>
-        <!-- fancybox plugin -->
-        <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-        <!-- custom js -->
-        <script type="text/javascript" src="/assets/js/main.js"></script>
+        <script src="{{ asset('build/scripts.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

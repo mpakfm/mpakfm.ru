@@ -5,6 +5,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/build/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -12,3 +13,7 @@
 .php_cs.cache
 composer.lock
 symfony.lock
+
+node_modules
+yarn.lock
+yarn-error.log
