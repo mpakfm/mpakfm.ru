@@ -645,6 +645,19 @@ a.dotted-link:hover {
   color: #fb866a;
 }
 
+.mobile-img {
+    display: none;
+}
+
+@media (min-width:320px) and (max-width:500px) {
+    .mobile-img {
+        display:block;
+    }
+    .desktop-img {
+        display: none;
+    }
+}
+
 @media (max-width: 767.98px) {
   .header {
     text-align: center;
