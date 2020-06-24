@@ -35,3 +35,11 @@
 
 
 
+@media (min-width:320px) and (max-width:500px) {
+  .mobile-img {
+    display:block;
+  }
+  .desktop-img {
+    display: none;
+  }
+}
