@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Repository\SitePropertyRepository;
 use App\Service\BasePropertizer;
-use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,13 +23,10 @@ class ErrorsController extends AbstractController
     {
         $statusCode = $exception->getStatusCode();
         $headers = $exception->getHeaders();
-        Printu::log($statusCode, 'Exception $statusCode', 'file');
-        Printu::log($headers, 'Exception $headers', 'file');
 
-        Printu::log($request->request->all(), '$request', 'file');
         $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
 
-        $response = new Response('', $statusCode);
+        $response = new Response('', $statusCode, $headers);
 
         try {
             $result = $this->render('bundles/TwigBundle/Exception/error'.$statusCode.'.html.twig', [
@@ -55,14 +51,5 @@ class ErrorsController extends AbstractController
                 'siteProp' => $siteProp,
             ], $response);
         }
-
-
-        /*
-        return $this->render('bundles/TwigBundle/Exception/error.html.twig', [
-            'status_code' => $statusCode,
-            'status_text' => $exception->getMessage(),
-            'siteProp' => $siteProp,
-        ], $response);
-        */
     }
 }
