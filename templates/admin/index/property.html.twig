@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <h1>Properties</h1>
+
+<p>name: {{ siteProp.getName() }}</p>
+<p>META title: {{ siteProp.getMetaTitle() }}</p>
+<p>META description: {{ siteProp.getMetaDescription() }}</p>
+<p>META keywords: {{ siteProp.getMetaKeywords() }}</p>
+<p>footer copyright: {{ siteProp.getFooterCopyright() | raw }}</p>
+<p>footer: author: {{ siteProp.getFooterAuthor() | raw }}</p>
+{% endblock %}
