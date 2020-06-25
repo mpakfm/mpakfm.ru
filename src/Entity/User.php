@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Mpakfm\Printu;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -19,6 +21,7 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $username;
@@ -29,6 +32,13 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
+    /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $email;
@@ -50,6 +60,8 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
+        $dt = new \DateTimeImmutable();
+        Printu::log('ROLE_USER', $dt->format('d.m H:i:s')."\t".'getRoles return', 'file');
         return ['ROLE_USER'];
     }
 
@@ -60,6 +72,8 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
+        $dt = new \DateTimeImmutable();
+        Printu::log($this->password, $dt->format('d.m H:i:s')."\t".'eraseCredentials $this->password', 'file');
     }
 
     public function serialize()
@@ -103,6 +117,17 @@ class User implements UserInterface, \Serializable
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
         return $this;
     }
 

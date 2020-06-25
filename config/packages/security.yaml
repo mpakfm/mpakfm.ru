@@ -16,6 +16,18 @@ security:
             anonymous: true
             lazy: true
             provider: our_db_provider
+            form_login:
+                login_path: /
+                check_path: /login
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path:   /logout
+                target: /
+            remember_me:
+                secret:   'kernel.secret'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+                always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -26,5 +38,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    #role_hierarchy:
+    #    ROLE_ADMIN:       ROLE_USER
+    #    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
