@@ -47,6 +47,11 @@ class SiteProperty
      */
     private $footer_author;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $last_update;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class SiteProperty
     public function setFooterAuthor(?string $footer_author): self
     {
         $this->footer_author = $footer_author;
+
+        return $this;
+    }
+
+    public function getLastUpdate(): ?\DateTimeInterface
+    {
+        return $this->last_update;
+    }
+
+    public function setLastUpdate(\DateTimeInterface $last_update): self
+    {
+        $this->last_update = $last_update;
 
         return $this;
     }

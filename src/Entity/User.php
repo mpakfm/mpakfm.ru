@@ -60,8 +60,6 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        $dt = new \DateTimeImmutable();
-        Printu::log('ROLE_USER', $dt->format('d.m H:i:s')."\t".'getRoles return', 'file');
         return ['ROLE_USER'];
     }
 
