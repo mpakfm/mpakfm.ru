@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ siteProp.getMetaTitle() }}{% endblock %}
+
+{% block body %}
+    <!-- ******HEADER****** -->
+    <header class="header">
+        <div class="container clearfix">
+            <img class="profile-image img-fluid float-left rounded-circle" src="build/images/persona-blue.png" alt="profile image" />
+            <div class="profile-content float-left">
+                <h1 class="name">{{ h1 }}</h1>
+                <h2 class="desc">Web Developer</h2>
+                <ul class="social list-inline">
+                    <!--<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>-->
+                    <li class="list-inline-item"><a href="https://github.com/mpakfm"><i class="fab fa-github-alt"></i></a></li>
+                    <li class="list-inline-item"><a href="https://ru.stackoverflow.com/users/353939/mpakfm"><i class="fab fa-stack-overflow"></i></a></li>
+                    <li class="list-inline-item last-item"><a href="https://www.facebook.com/mpakfm"><i class="fab fa-facebook"></i></a></li>
+                    <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
+                </ul>
+            </div><!--//profile-->
+            <a class="btn btn-cta-primary float-right" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>
+        </div><!--//container-->
+    </header><!--//header-->
+
+    <div class="container sections-wrapper">
+        <div class="row">
+            <div class="primary col-lg-8 col-12">
+                <section class="about section">
+                    <div class="section-inner shadow-sm rounded">
+                        <h2 class="heading">Оплата услуг</h2>
+                        <div class="content">
+                            <p>Форма оплаты различных работ и услуг по программированию и администрированию.</p>
+                            <p>Ставка {{ rate }}р/час. Укажите количество часов или сразу сумму для оплаты.</p>
+                            <p>Введите email и комментарий для платежа.</p>
+                            <p>Чек будет выслан в течении суток.</p>
+                            <form id="payment-form" method="post" name="payment" action="{{ robokassa.url }}">
+                                <input type="hidden" name="MerchantLogin" value="">
+                                <input type="hidden" name="OutSum" value="">
+                                <input type="hidden" name="InvId" value="">
+                                <input type="hidden" name="Description" value="">
+                                <input type="hidden" name="SignatureValue" value="">
+                                <input type="hidden" name="IncCurrLabel" value="">
+                                <input type="hidden" name="Culture" value="">
+                                <input type="hidden" name="Email" value="">
+                                <input type="hidden" name="Encoding" value="">
+                                <input type="hidden" id="rate" name="rate" value="{{ rate }}">
+                                <div class="form-group">
+                                    <label for="timing">Часы:</label>
+                                    <input type="text" name="timing" id="timing" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="money">Сумма:</label>
+                                    <input type="text" name="money" id="money" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="text" name="email" id="email" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="comment" name="comment" class="form-control" placeholder="Комментарий"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" id="js-btn-pay" class="btn btn-success" value="Оплатить">
+                                </div>
+                            </form>
+
+                        </div><!--//content-->
+                    </div><!--//section-inner-->
+                </section><!--//section-->
+            </div><!--//primary-->
+
+            <div class="secondary col-lg-4 col-12">
+                <aside class="info aside section">
+                    <div class="section-inner shadow-sm rounded">
+                        <h2 class="heading sr-only">Контактная информация</h2>
+                        <div class="content">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Город:</span>Москва, Россия</li>
+                                <li><i class="fas fa-envelope"></i><span class="sr-only">Email:</span><a href="mailto:info@mpakfm.ru">info@mpakfm.ru</a></li>
+                                <li><i class="fas fa-phone-alt"></i><span class="sr-only">Phone:</span><a href="tel:+79067945511">+7(906) 794-55-11</a></li>
+                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://www.mpakfm.ru">https://www.mpakfm.ru</a></li>
+                            </ul>
+                        </div><!--//content-->
+                    </div><!--//section-inner-->
+                </aside><!--//aside-->
+
+            </div><!--//secondary-->
+        </div><!--//row-->
+    </div><!--//masonry-->
+
+    <script>
+        let btn = 'js-btn-pay';
+        document.addEventListener('DOMContentLoaded', function(){
+            //console.log('btn: ' + $('#js-btn-pay'));
+
+        });
+    </script>
+
+{% endblock %}

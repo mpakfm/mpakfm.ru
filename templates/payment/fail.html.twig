@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ siteProp.getMetaTitle() }}{% endblock %}
+
+{% block body %}
+    <!-- ******HEADER****** -->
+    <header class="header">
+        <div class="container clearfix">
+            <img class="profile-image img-fluid float-left rounded-circle" src="build/images/persona-blue.png" alt="profile image" />
+            <div class="profile-content float-left">
+                <h1 class="name">{{ h1 }}</h1>
+                <h2 class="desc">Web Developer</h2>
+                <ul class="social list-inline">
+                    <!--<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>-->
+                    <li class="list-inline-item"><a href="https://github.com/mpakfm"><i class="fab fa-github-alt"></i></a></li>
+                    <li class="list-inline-item"><a href="https://ru.stackoverflow.com/users/353939/mpakfm"><i class="fab fa-stack-overflow"></i></a></li>
+                    <li class="list-inline-item last-item"><a href="https://www.facebook.com/mpakfm"><i class="fab fa-facebook"></i></a></li>
+                    <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
+                </ul>
+            </div><!--//profile-->
+            <a class="btn btn-cta-primary float-right" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>
+        </div><!--//container-->
+    </header><!--//header-->
+
+    <div class="container sections-wrapper">
+        <div class="row">
+            <div class="primary col-lg-8 col-12">
+                <section class="about section">
+                    <div class="section-inner shadow-sm rounded">
+                        <h2 class="heading">Результат оплаты</h2>
+                        <div class="content">
+                            <p>Ошибка оплаты.</p>
+                            <pre>{{ request.query | raw }}</pre>
+                        </div><!--//content-->
+                    </div><!--//section-inner-->
+                </section><!--//section-->
+            </div><!--//primary-->
+
+            <div class="secondary col-lg-4 col-12">
+                <aside class="info aside section">
+                    <div class="section-inner shadow-sm rounded">
+                        <h2 class="heading sr-only">Контактная информация</h2>
+                        <div class="content">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Город:</span>Москва, Россия</li>
+                                <li><i class="fas fa-envelope"></i><span class="sr-only">Email:</span><a href="mailto:info@mpakfm.ru">info@mpakfm.ru</a></li>
+                                <li><i class="fas fa-phone-alt"></i><span class="sr-only">Phone:</span><a href="tel:+79067945511">+7(906) 794-55-11</a></li>
+                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://www.mpakfm.ru">https://www.mpakfm.ru</a></li>
+                            </ul>
+                        </div><!--//content-->
+                    </div><!--//section-inner-->
+                </aside><!--//aside-->
+
+            </div><!--//secondary-->
+        </div><!--//row-->
+    </div><!--//masonry-->
+
+{% endblock %}
