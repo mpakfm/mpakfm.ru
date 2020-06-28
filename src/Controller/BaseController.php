@@ -33,6 +33,7 @@ class BaseController extends AbstractController
         $basePropertizer = new BasePropertizer();
         $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
         $parameters['siteProp'] = $siteProp;
+        $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
         if (null === $response) {
             $response = new Response();
         }

@@ -22,12 +22,13 @@ class ErrorsController extends AbstractController
 {
     public function show(\Throwable $exception, DebugLoggerInterface $logger = null, Request $request, SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer)
     {
+        $dt = new \DateTimeImmutable();
         if ('Access Denied.' == $exception->getMessage()) {
             $exception = new HttpException(403, 'Access Denied');
         }
         $className = get_class($exception);
-        Printu::log($className, 'ErrorsController::show $className', 'file');
-        Printu::log($exception->getMessage(), 'ErrorsController::show $exception->getMessage()', 'file');
+        Printu::log($className, $dt->format('d.m H:i:s')."\t".'ErrorsController::show $className', 'file', 'errors.controller.log');
+        Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'ErrorsController::show $exception->getMessage()', 'file', 'errors.controller.log');
         switch ($className) {
             case'Symfony\\Component\\HttpKernel\\Exception\\HttpException':
                 $statusCode = $exception->getStatusCode();
@@ -38,7 +39,7 @@ class ErrorsController extends AbstractController
                 $statusCode = '500';
                 $headers = [];
                 $errorText = 'Ошибка сервера';
-                Printu::log($exception->getMessage(), 'Exception in file '.$exception->getFile().' in line '.$exception->getLine(), 'file');
+                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'Exception in file '.$exception->getFile().' in line '.$exception->getLine(), 'file', 'errors.controller.log');
         }
 
         try {
@@ -49,6 +50,7 @@ class ErrorsController extends AbstractController
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
+                'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
             ], $response);
 
             return $result;
@@ -58,6 +60,7 @@ class ErrorsController extends AbstractController
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
+                'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
             ], $response);
         } catch (\Throwable $exceptionRender) {
             return $this->render('bundles/TwigBundle/Exception/error.html.twig', [
@@ -65,6 +68,7 @@ class ErrorsController extends AbstractController
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
+                'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
             ], $response);
         }
     }
