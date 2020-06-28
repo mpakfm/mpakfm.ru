@@ -29,10 +29,12 @@ class BaseController extends AbstractController
 
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
     {
+        Printu::log($_ENV['APP_ENV'], 'APP_ENV', 'file');
         $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
         $basePropertizer = new BasePropertizer();
         $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
         $parameters['siteProp'] = $siteProp;
+        $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
         if (null === $response) {
             $response = new Response();
         }

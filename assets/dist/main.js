@@ -26,73 +26,75 @@ jQuery(document).ready(function($) {
     
     /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
     //GitHubActivity.feed({ username: "mpakfm", selector: "#ghfeed" });
-});
 
-document.addEventListener('DOMContentLoaded', function(){
-    console.log('ready');
     let timingField = document.getElementById('timing');
     let rateField = document.getElementById('rate');
     let moneyField = document.getElementById('money');
-    timingField.oninput = function() {
-        rateHour = parseFloat(timingField.value.replace(',', '.'));
-        try {
-            let money = Math.round(rateHour * rateField.value * 100) / 100;
-            console.log('money: ' + money);
-            console.log('typeof money: ' + typeof money);
-            if (money && !isNaN(money)) {
-                moneyField.value = money;
-                console.log('set money: ' + money);
+    if (timingField) {
+        timingField.oninput = function() {
+            rateHour = parseFloat(timingField.value.replace(',', '.'));
+            try {
+                let money = Math.round(rateHour * rateField.value * 100) / 100;
+                console.log('money: ' + money);
+                console.log('typeof money: ' + typeof money);
+                if (money && !isNaN(money)) {
+                    moneyField.value = money;
+                    console.log('set money: ' + money);
+                }
+            } catch (e) {
+                console.log('exception:')
+                console.log(e);
             }
-        } catch (e) {
-            console.log('exception:')
-            console.log(e);
-        }
-    };
+        };
+    }
 
-    moneyField.oninput = function() {
-        timingField.value = '';
-        console.log('set empty to timing');
-    };
+    if (moneyField) {
+        moneyField.oninput = function () {
+            timingField.value = '';
+            console.log('set empty to timing');
+        };
+    }
 
     let btnPay = $('#js-btn-pay');
-    console.log(btnPay);
-    btnPay.click(function(){
-        if (!paymentFormValidation()) {
-            return;
-        }
-        $.ajax({
-            url:'/payment/form',
-            dataType:'json',
-            success:function(data,status){
-                console.log(data);
-                console.log(status);
-                if (status !== 'success') {
-                    console.log('error');
-                    return;
-                }
-                $('[name="MerchantLogin"]').val(data.MerchantLogin);
-                $('[name="OutSum"]').val(data.OutSum);
-                $('[name="InvId"]').val(data.InvId);
-                $('[name="Description"]').val(data.Description);
-                $('[name="SignatureValue"]').val(data.SignatureValue);
-                $('[name="IncCurrLabel"]').val(data.IncCurrLabel);
-                $('[name="Culture"]').val(data.Culture);
-                $('[name="Email"]').val(data.Email);
-                $('[name="Encoding"]').val(data.Encoding);
-                $('#payment-form').submit();
-            },
-            type:'POST',
-            data:{
-                money: $('#money').val(),
-                email: $('#email').val(),
-                comment: $('#comment').val(),
-                organization_name: $('#organization_name').val(),
-                organization_inn: $('#organization_inn').val(),
-                organization: $('#organization').prop('checked') ? '1' : '0',
-                foreign_organization: $('#foreign_organization').prop('checked') ? '1' : '0',
+    if (btnPay.length > 0) {
+        btnPay.click(function(){
+            if (!paymentFormValidation()) {
+                return;
             }
+            $.ajax({
+                url:'/payment/form',
+                dataType:'json',
+                success:function(data,status){
+                    console.log(data);
+                    console.log(status);
+                    if (status !== 'success') {
+                        console.log('error');
+                        return;
+                    }
+                    $('[name="MerchantLogin"]').val(data.MerchantLogin);
+                    $('[name="OutSum"]').val(data.OutSum);
+                    $('[name="InvId"]').val(data.InvId);
+                    $('[name="Description"]').val(data.Description);
+                    $('[name="SignatureValue"]').val(data.SignatureValue);
+                    $('[name="IncCurrLabel"]').val(data.IncCurrLabel);
+                    $('[name="Culture"]').val(data.Culture);
+                    $('[name="Email"]').val(data.Email);
+                    $('[name="Encoding"]').val(data.Encoding);
+                    $('#payment-form').submit();
+                },
+                type:'POST',
+                data:{
+                    money: $('#money').val(),
+                    email: $('#email').val(),
+                    comment: $('#comment').val(),
+                    organization_name: $('#organization_name').val(),
+                    organization_inn: $('#organization_inn').val(),
+                    organization: $('#organization').prop('checked') ? '1' : '0',
+                    foreign_organization: $('#foreign_organization').prop('checked') ? '1' : '0',
+                }
+            });
         });
-    });
+    }
 
     $('.form-group.organization').hide();
 
@@ -107,8 +109,6 @@ function paymentFormHandler() {
         $('.form-group.organization.foreign_organization').toggle();
     });
     $('.js-valid input, .js-valid textarea').focusout(function(){
-        console.log('focusout')
-        console.log(this)
         paymentFieldValidation(this);
     });
 }
@@ -116,7 +116,6 @@ function paymentFormHandler() {
 function paymentFieldValidation(el) {
     let field = $(el).attr('id');
     let parent = $(el).parents('.js-valid');
-    console.log('val: ' + $('#' + field).val());
     if ($('#' + field).val() == '') {
         $(parent).addClass('error');
     } else if (field == 'money' && (isNaN(parseFloat($('#' + field).val())) || parseFloat($('#' + field).val()) <= 0) ) {
