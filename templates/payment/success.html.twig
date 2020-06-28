@@ -31,12 +31,13 @@
                         <h2 class="heading">Результат оплаты</h2>
                         <div class="content">
                             <p>Успешно!</p>
-                            <p>После получаения платежа я вышлю вам чек на указанный email.</p>
+                            <p>После получения платежа я вышлю вам чек на указанный email.</p>
                             {% if payment %}
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Email</th>
                                         <th>Сумма</th>
                                         <th>Назначение</th>
                                         <th>Дата платежа</th>
@@ -45,6 +46,7 @@
                                     <tbody>
                                         <tr>
                                             <td>{{ payment.id }}</td>
+                                            <td>{{ payment.email }}</td>
                                             <td>{{ payment.money }}</td>
                                             <td>{{ payment.description }}</td>
                                             <td>{{ payment.created|date("d.m.Y H:i:s") }}</td>
