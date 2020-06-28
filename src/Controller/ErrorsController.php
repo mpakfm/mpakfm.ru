@@ -31,6 +31,7 @@ class ErrorsController extends AbstractController
         Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'ErrorsController::show $exception->getMessage()', 'file', 'errors.controller.log');
         switch ($className) {
             case'Symfony\\Component\\HttpKernel\\Exception\\HttpException':
+            case'Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException':
                 $statusCode = $exception->getStatusCode();
                 $headers = $exception->getHeaders();
                 $errorText = $exception->getMessage();

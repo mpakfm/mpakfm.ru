@@ -25,9 +25,9 @@ class IndexController extends BaseController
     }
 
     /**
-     * @Route("/contact/", name="contact_slash")
+     * @Route("/portfolio", name="portfolio")
      */
-    public function contactSlash()
+    public function portfolio()
     {
         return $this->redirectToRoute('index', [], 301);
     }
