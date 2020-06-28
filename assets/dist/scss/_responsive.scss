@@ -21,6 +21,10 @@
     .project-image {
         margin-bottom: 15px;
     }
+
+    .xs-hidden {
+        display: none;
+    }
     
 }
 
@@ -47,5 +51,23 @@
   }
   .desktop-img {
     display: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .payment-logo {
+    display: block;
+    position: relative;
+    left: 0px;
+    top: 20px;
+  }
+  .payment-logo img {
+    height: 24px;
+    display: block;
+  }
+  .payment-logo span {
+    display: block;
+    font-size: 0.8em;
+    margin: 0px 0px 0px 6px;
   }
 }
