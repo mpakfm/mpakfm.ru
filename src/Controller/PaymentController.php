@@ -21,10 +21,15 @@ class PaymentController extends BaseController
     public function result(Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
         $dt = new \DateTimeImmutable();
-        $payment = $repository->find((int) $request->query->get('InvId'));
 
         try {
-            Printu::log($request->query, $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
+            if ($request->query->get('InvId')) {
+                $payment = $repository->find((int) $request->query->get('InvId'));
+                Printu::log($request->query->all(), $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
+            } elseif ($request->request->get('InvId')) {
+                $payment = $repository->find((int) $request->request->get('InvId'));
+                Printu::log($request->request->all(), $dt->format('H:i:s')."\t".'PaymentController::result $request->request', 'file');
+            }
             Printu::log($payment, $dt->format('H:i:s')."\t".'PaymentController::result $payment', 'file');
 
             $robokassa->verify($request);
