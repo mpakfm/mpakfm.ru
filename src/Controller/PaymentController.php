@@ -32,7 +32,7 @@ class PaymentController extends BaseController
             }
             Printu::log($payment, $dt->format('H:i:s')."\t".'PaymentController::result $payment', 'file');
 
-            $robokassa->verify($request);
+            $robokassa->verify($request, 2);
             $payment->setResult(1);
         } catch (\Throwable $exception) {
             $payment->setResult(0);
@@ -44,7 +44,7 @@ class PaymentController extends BaseController
         $entityManager->persist($payment);
         $entityManager->flush();
 
-        return $this->json(['result' => $payment->setResult]);
+        return $this->json(['result' => $payment->getResult()]);
     }
 
     /**
@@ -84,7 +84,7 @@ class PaymentController extends BaseController
         }
 
         try {
-            $verified = $robokassa->verify($request);
+            $verified = $robokassa->verify($request, 1);
             Printu::log($verified, $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify $verified', 'file');
         } catch (\Throwable $exception) {
             Printu::log($exception->getMessage(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify exception', 'file');
