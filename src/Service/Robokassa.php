@@ -49,15 +49,20 @@ class Robokassa
     public function verify(Request $request): bool
     {
         if ($request->query->get('SignatureValue')) {
-            $str = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
+            $str = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
+            $str2 = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
             $hash = $request->query->get('SignatureValue');
         } elseif ($request->request->get('SignatureValue')) {
-            $str = "{$this->merchantLogin}:".$request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
+            $str = "{$this->merchantLogin}:".$request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
+            $str2 = "{$this->merchantLogin}:".$request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
             $hash = $request->request->get('SignatureValue');
         }
         Printu::log($str, 'Robokassa::verify $str', 'file');
+        Printu::log($str2, 'Robokassa::verify $str2', 'file');
         $crc = hash(static::ALGO, $str);
+        $crc2 = hash(static::ALGO, $str2);
         Printu::log($crc, 'Robokassa::verify $crc', 'file');
+        Printu::log($crc2, 'Robokassa::verify $crc2', 'file');
         Printu::log($hash, 'Robokassa::verify SignatureValue', 'file');
         if ($hash != $crc) {
             throw new \Exception('Wrong hash');
