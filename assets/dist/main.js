@@ -86,6 +86,10 @@ document.addEventListener('DOMContentLoaded', function(){
                 money: $('#money').val(),
                 email: $('#email').val(),
                 comment: $('#comment').val(),
+                organization_name: $('#organization_name').val(),
+                organization_inn: $('#organization_inn').val(),
+                organization: $('#organization').prop('checked') ? '1' : '0',
+                foreign_organization: $('#foreign_organization').prop('checked') ? '1' : '0',
             }
         });
     });

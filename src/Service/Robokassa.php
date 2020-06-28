@@ -92,6 +92,13 @@ class Robokassa
         $payment->setIsTest(static::IS_TEST);
         $payment->setCreated(new \DateTimeImmutable());
 
+        if ($request->request->get('organization')) {
+            $payment->setOrganization($request->request->get('organization_name'));
+            if (!$request->request->get('foreign_organization')) {
+                $payment->setOrganizationInn($request->request->get('organization_inn'));
+            }
+        }
+
         $this->validate($payment);
 
         $entityManager->persist($payment);
