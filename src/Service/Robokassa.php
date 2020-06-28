@@ -46,9 +46,9 @@ class Robokassa
         return $this->pass2;
     }
 
-    public function verify(Payment $payment, $hash): bool
+    public function verify(Request $request): bool
     {
-        $str = "{$payment->getMerchant()}:".$payment->getMoney().":{$payment->getId()}:".$this->getPasswordTwo(static::IS_TEST);
+        $str = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
         Printu::log($str, 'Robokassa::verify $str', 'file');
         $crc = hash(static::ALGO, $str);
         Printu::log($crc, 'Robokassa::verify $crc', 'file');

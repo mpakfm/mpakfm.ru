@@ -25,7 +25,7 @@ class PaymentController extends BaseController
             Printu::log($request->query, $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
             Printu::log($payment, $dt->format('H:i:s')."\t".'PaymentController::result $payment', 'file');
 
-            $robokassa->verify($payment, $request->query->get('SignatureValue'));
+            $robokassa->verify($request);
             $payment->setResult(1);
 
         } catch (\Throwable $exception) {
