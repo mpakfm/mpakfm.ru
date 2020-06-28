@@ -49,12 +49,12 @@ class Robokassa
     public function verify(Request $request): bool
     {
         if ($request->query->get('SignatureValue')) {
-            $str = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
-            $str2 = "{$this->merchantLogin}:".$request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
+            $str = $request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
+            $str2 = $request->query->get('OutSum').":{$request->query->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
             $hash = $request->query->get('SignatureValue');
         } elseif ($request->request->get('SignatureValue')) {
-            $str = "{$this->merchantLogin}:".$request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
-            $str2 = "{$this->merchantLogin}:".$request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
+            $str = $request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordOne(static::IS_TEST);
+            $str2 = $request->request->get('OutSum').":{$request->request->get('InvId')}:".$this->getPasswordTwo(static::IS_TEST);
             $hash = $request->request->get('SignatureValue');
         }
         Printu::log($str, 'Robokassa::verify $str', 'file');
