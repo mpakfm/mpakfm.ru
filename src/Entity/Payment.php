@@ -62,6 +62,21 @@ class Payment
      */
     private $paymented;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_check;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $check_sent;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -171,6 +186,42 @@ class Payment
     public function setPaymented(?\DateTimeInterface $paymented): self
     {
         $this->paymented = $paymented;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getIsCheck(): ?bool
+    {
+        return $this->is_check;
+    }
+
+    public function setIsCheck(?bool $is_check): self
+    {
+        $this->is_check = $is_check;
+
+        return $this;
+    }
+
+    public function getCheckSent(): ?\DateTimeInterface
+    {
+        return $this->check_sent;
+    }
+
+    public function setCheckSent(?\DateTimeInterface $check_sent): self
+    {
+        $this->check_sent = $check_sent;
 
         return $this;
     }

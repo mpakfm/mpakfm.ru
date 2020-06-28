@@ -34,13 +34,12 @@ document.addEventListener('DOMContentLoaded', function(){
     let rateField = document.getElementById('rate');
     let moneyField = document.getElementById('money');
     timingField.oninput = function() {
-        rateHour = timingField.value;
-        console.log('oninput hour: ' + rateHour);
+        rateHour = parseFloat(timingField.value.replace(',', '.'));
         try {
-            let money = rateHour * rateField.value;
+            let money = Math.round(rateHour * rateField.value * 100) / 100;
             console.log('money: ' + money);
             console.log('typeof money: ' + typeof money);
-            if (money && money !== NaN) {
+            if (money && !isNaN(money)) {
                 moneyField.value = money;
                 console.log('set money: ' + money);
             }
@@ -58,6 +57,9 @@ document.addEventListener('DOMContentLoaded', function(){
     let btnPay = $('#js-btn-pay');
     console.log(btnPay);
     btnPay.click(function(){
+        if (!paymentFormValidation()) {
+            return;
+        }
         $.ajax({
             url:'/payment/form',
             dataType:'json',
@@ -87,10 +89,80 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         });
     });
+
+    $('.form-group.organization').hide();
+
+    paymentFormHandler();
 });
 
 function paymentFormHandler() {
-    $('#timing').keypress(function (){
-
+    $('#organization').click(function (){
+        $('.form-group.organization').toggle();
     });
+    $('#foreign_organization').click(function (){
+        $('.form-group.organization.foreign_organization').toggle();
+    });
+    $('.js-valid input, .js-valid textarea').focusout(function(){
+        console.log('focusout')
+        console.log(this)
+        paymentFieldValidation(this);
+    });
+}
+
+function paymentFieldValidation(el) {
+    let field = $(el).attr('id');
+    let parent = $(el).parents('.js-valid');
+    console.log('val: ' + $('#' + field).val());
+    if ($('#' + field).val() == '') {
+        $(parent).addClass('error');
+    } else if (field == 'money' && (isNaN(parseFloat($('#' + field).val())) || parseFloat($('#' + field).val()) <= 0) ) {
+        $(parent).addClass('error');
+    } else {
+        if (field == 'money') {
+            let floatVal = parseFloat($('#' + field).val());
+            $('#' + field).val(floatVal);
+        }
+        $(parent).removeClass('error');
+    }
+}
+
+function paymentFormValidation() {
+    let isValid = true;
+
+    $('#payment-form .js-valid').removeClass('error');
+
+    if ($('#money').val() == '' || isNaN(parseFloat($('#money').val())) || parseFloat($('#money').val()) <= 0 ) {
+        isValid = false;
+        let parent = $('#money').parents('.js-valid');
+        $(parent).addClass('error');
+    }
+
+    if ($('#email').val() == '') {
+        isValid = false;
+        let parent = $('#email').parents('.js-valid');
+        $(parent).addClass('error');
+    }
+
+    if ($('#comment').val() == '') {
+        isValid = false;
+        let parent = $('#comment').parents('.js-valid');
+        $(parent).addClass('error');
+    }
+
+    if ($('#organization').prop('checked')) {
+        if ($('#organization_name').val() == '') {
+            isValid = false;
+            let parent = $('#organization_name').parents('.js-valid');
+            $(parent).addClass('error');
+        }
+        if (!$('#foreign_organization').prop('checked')) {
+            if ($('#organization_inn').val() == '') {
+                isValid = false;
+                let parent = $('#organization_inn').parents('.js-valid');
+                $(parent).addClass('error');
+            }
+        }
+    }
+
+    return isValid;
 }

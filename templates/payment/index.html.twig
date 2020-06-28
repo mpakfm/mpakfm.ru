@@ -31,9 +31,7 @@
                         <h2 class="heading">Оплата услуг</h2>
                         <div class="content">
                             <p>Форма оплаты различных работ и услуг по программированию и администрированию.</p>
-                            <p>Ставка {{ rate }}р/час. Укажите количество часов или сразу сумму для оплаты.</p>
-                            <p>Введите email и комментарий для платежа.</p>
-                            <p>Чек будет выслан в течении суток.</p>
+                            <p>Ставка {{ rate }}р/час. Вы можете указать количество часов или сразу сумму для оплаты. Введите email и назначение платежа. Для организаций необходимо заполнить название и ИНН. Это необходимо для заполнения чека. Чек будет выслан на указанный емайл. Я работаю в налоговом режиме НПД и чеки формируются в программе "Мой налог".</p>
                             <form id="payment-form" method="post" name="payment" action="{{ robokassa.url }}">
 
                                 <input type="hidden" name="IsTest" value="1">
@@ -49,18 +47,38 @@
                                 <input type="hidden" id="rate" name="rate" value="{{ rate }}">
                                 <div class="form-group">
                                     <label for="timing">Часы:</label>
-                                    <input type="text" name="timing" id="timing" class="form-control">
+                                    <input type="text" name="timing" id="timing" class="form-control" autocomplete="off">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group js-valid">
                                     <label for="money">Сумма:</label>
-                                    <input type="text" name="money" id="money" class="form-control">
+                                    <input type="text" name="money" id="money" class="form-control" autocomplete="off">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group js-valid">
                                     <label for="email">Email:</label>
-                                    <input type="text" name="email" id="email" class="form-control">
+                                    <input type="text" name="email" id="email" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <textarea id="comment" name="comment" class="form-control" placeholder="Комментарий"></textarea>
+                                    <label for="organization">Организация:</label>
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" name="organization" id="organization" value="1" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-group organization">
+                                    <label for="foreign_organization">Иностранная организация:</label>
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" name="foreign_organization" id="foreign_organization" value="1" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-group js-valid organization">
+                                    <label for="organization_name">Название:</label>
+                                    <input type="text" name="organization_name" id="organization_name" class="form-control">
+                                </div>
+                                <div class="form-group js-valid organization foreign_organization">
+                                    <label for="organization_inn">ИНН:</label>
+                                    <input type="text" name="organization_inn" id="organization_inn" class="form-control">
+                                </div>
+                                <div class="form-group js-valid">
+                                    <textarea id="comment" name="comment" class="form-control" placeholder="Назначение платежа"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <input type="button" id="js-btn-pay" class="btn btn-success" value="Оплатить">

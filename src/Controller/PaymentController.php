@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Payment;
 use App\Repository\PaymentRepository;
 use App\Service\Robokassa;
 use Mpakfm\Printu;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +29,6 @@ class PaymentController extends BaseController
 
             $robokassa->verify($request);
             $payment->setResult(1);
-
         } catch (\Throwable $exception) {
             $payment->setResult(0);
             $payment->setError($exception->getMessage());
@@ -38,13 +39,7 @@ class PaymentController extends BaseController
         $entityManager->persist($payment);
         $entityManager->flush();
 
-        return $this->baseRender('payment/result.html.twig', [
-            'h1' => 'Сергей Фомин',
-            'request' => [
-                'all' => Printu::log($request->request->all(), 'all', true),
-                'query' => Printu::log($request->query, 'query', true),
-            ],
-        ]);
+        return $this->json(['result' => $payment->setResult]);
     }
 
     /**
@@ -61,10 +56,27 @@ class PaymentController extends BaseController
     /**
      * @Route("/payment/{status}", name="payment_status")
      */
-    public function paymentStatus(string $status, Request $request)
+    public function paymentStatus(string $status, Request $request, PaymentRepository $repository)
     {
         $dt = new \DateTimeImmutable();
-        Printu::log($request->query, $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->query for '.$status, 'file');
+        if ($request->query->get('InvId')) {
+            Printu::log($request->query->all(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->query for '.$status, 'file');
+            $invId = (int) $request->query->get('InvId');
+        } elseif ($request->request->get('InvId')) {
+            Printu::log($request->request->all(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->request for '.$status, 'file');
+            $invId = (int) $request->request->get('InvId');
+        }
+        if (!$invId) {
+            throw new Exception('Empty payment id '.$invId);
+        }
+        $payment = $repository->find($invId);
+        if (!$payment) {
+            throw new Exception('Unknown payment id '.$invId);
+        }
+        $payment->setStatus($status);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($payment);
+        $entityManager->flush();
 
         if (!in_array($status, $this->status)) {
             throw new HttpException(404, 'Страница не найдена');
@@ -74,7 +86,6 @@ class PaymentController extends BaseController
             'h1' => 'Сергей Фомин',
             'request' => [
                 'status' => $status,
-                'query' => Printu::log($request->query, 'query', true),
             ],
         ]);
     }
@@ -84,22 +95,9 @@ class PaymentController extends BaseController
      */
     public function index(Request $request, Robokassa $robokassa)
     {
-        if ('POST' == $request->getMethod()) {
-            Printu::log($request->request->all(), 'request all', 'file');
-            $postFields = $robokassa->makePayment($request);
-            //Redirect
-            return $this->redirectToRoute('payment');
-        }
-//        $mrh_login = 'mpakfm.ru';
-//        $mrh_pass1 = 'bQ3GT01qRsVka30WKnrG';
-//        $inv_id = 0;
-//        $inv_desc = 'Техническая документация по ROBOKASSA';
-//        $out_summ = '1.00';
-//        $crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1");
-
         return $this->baseRender('payment/index.html.twig', [
             'h1' => 'Сергей Фомин',
-            'rate' => '1000',
+            'rate' => '1200',
             'robokassa' => [
                 'url' => $robokassa::$url,
             ],
