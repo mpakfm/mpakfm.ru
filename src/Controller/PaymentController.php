@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Payment;
 use App\Repository\PaymentRepository;
 use App\Service\Robokassa;
 use Mpakfm\Printu;
@@ -107,6 +106,7 @@ class PaymentController extends BaseController
 
         return $this->baseRender('payment/'.$status.'.html.twig', [
             'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer / Оплата',
             'request' => [
                 'status' => $status,
             ],
@@ -117,10 +117,11 @@ class PaymentController extends BaseController
     /**
      * @Route("/payment", name="payment")
      */
-    public function index(Request $request, Robokassa $robokassa)
+    public function index(Robokassa $robokassa)
     {
         return $this->baseRender('payment/index.html.twig', [
             'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer / Оплата',
             'rate' => '1200',
             'robokassa' => [
                 'url' => $robokassa::$url,

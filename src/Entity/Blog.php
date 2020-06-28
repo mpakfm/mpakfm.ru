@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Mpakfm\RussianDateTime;
 
 /**
  * @ORM\Entity(repositoryClass=BlogRepository::class)
@@ -26,6 +27,11 @@ class Blog
      * @ORM\Column(type="datetime")
      */
     private $created;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -76,6 +82,18 @@ class Blog
         return $this;
     }
 
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
     public function getShortText(): ?string
     {
         return $this->short_text;
@@ -122,5 +140,15 @@ class Blog
         $this->hidden = $hidden;
 
         return $this;
+    }
+
+    public function getCreatedRussian(string $format, int $case = RussianDateTime::FORMAT_BY)
+    {
+        return RussianDateTime::format($format, $this->created, $case);
+    }
+
+    public function getUpdatedRussian(string $format, int $case = RussianDateTime::FORMAT_BY)
+    {
+        return RussianDateTime::format($format, $this->updated, $case);
     }
 }

@@ -1,0 +1,30 @@
+<style>
+    .mobile-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        color: #778492 !important;
+        display: none;
+    }
+</style>
+<header class="header">
+    <div class="md-hidden mobile-menu">
+        <a href="javascript:void(0);"><i class="fas fa-ellipsis-v"></i></a>
+    </div>
+    <div class="container clearfix">
+        <a href="/"><img class="profile-image img-fluid float-left rounded-circle" src="build/images/persona-blue.png" alt="profile image" /></a>
+        <div class="profile-content float-left">
+            <h1 class="name">{{ h1 }}</h1>
+            <h2 class="desc">{{ h2 }}</h2>
+            <ul class="social list-inline xs-hidden">
+                <li class="list-inline-item"><a href="https://github.com/mpakfm"><i class="fab fa-github-alt"></i></a></li>
+                <li class="list-inline-item"><a href="https://ru.stackoverflow.com/users/353939/mpakfm"><i class="fab fa-stack-overflow"></i></a></li>
+                <li class="list-inline-item last-item"><a href="https://www.facebook.com/mpakfm"><i class="fab fa-facebook"></i></a></li>
+                <li class="list-inline-item last-item"><a href="/blog" title="Блог"><i class="fas fa-blog"></i></a></li>
+                <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
+            </ul>
+        </div><!--//profile-->
+        <a class="btn btn-cta-primary float-right xs-hidden" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>
+    </div><!--//container-->
+</header><!--//header-->

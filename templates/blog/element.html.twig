@@ -3,21 +3,38 @@
 {% block title %}{{ siteProp.getMetaTitle() }}{% endblock %}
 
 {% block body %}
+    <style>
+        .section-inner {
+            position: relative;
+        }
+        .content-datetime {
+            display: block;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            border: #DAE3E7 1px solid;
+            border-radius: 4px;
+            padding: 2px;
+            font-size: 0.8em;
+            background-color: #DAE3E7;
+            color: #778492;
+        }
+    </style>
     <!-- ******HEADER****** -->
     {% include "top.html.twig" %}
 
     <div class="container sections-wrapper">
         <div class="row">
             <div class="primary col-lg-8 col-12">
-                <section class="about section">
+                <section class="latest section">
                     <div class="section-inner shadow-sm rounded">
-                        <h2 class="heading">Результат оплаты</h2>
+                        <h2 class="heading">{{ element.name }}</h2>
+                        <div class="content-datetime">{{ element.getCreatedRussian('d f H:i') }}</div>
                         <div class="content">
-                            <p>Ошибка оплаты.</p>
-                            <p>Видимо какие-то накладки на стороне приема платежей. Попробуйте <a href="/payment">еще раз</a> через некоторое время.</p>
+                            {{ element.getFullText()|raw }}
                         </div><!--//content-->
                     </div><!--//section-inner-->
-                </section><!--//section-->
+                </section>
             </div><!--//primary-->
 
             <div class="secondary col-lg-4 col-12">
@@ -29,7 +46,7 @@
                                 <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Город:</span>Москва, Россия</li>
                                 <li><i class="fas fa-envelope"></i><span class="sr-only">Email:</span><a href="mailto:info@mpakfm.ru">info@mpakfm.ru</a></li>
                                 <li><i class="fas fa-phone-alt"></i><span class="sr-only">Phone:</span><a href="tel:+79067945511">+7(906) 794-55-11</a></li>
-                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://www.mpakfm.ru">https://www.mpakfm.ru</a></li>
+                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://mpakfm.ru">https://mpakfm.ru</a></li>
                             </ul>
                         </div><!--//content-->
                     </div><!--//section-inner-->
