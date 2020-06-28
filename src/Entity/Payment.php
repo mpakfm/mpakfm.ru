@@ -77,6 +77,16 @@ class Payment
      */
     private $check_sent;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $organization;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $organization_inn;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -222,6 +232,30 @@ class Payment
     public function setCheckSent(?\DateTimeInterface $check_sent): self
     {
         $this->check_sent = $check_sent;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?string
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?string $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    public function getOrganizationInn(): ?string
+    {
+        return $this->organization_inn;
+    }
+
+    public function setOrganizationInn(?string $organization_inn): self
+    {
+        $this->organization_inn = $organization_inn;
 
         return $this;
     }
