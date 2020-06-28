@@ -100,6 +100,7 @@ class PaymentController extends BaseController
             'rate' => '1200',
             'robokassa' => [
                 'url' => $robokassa::$url,
+                'test' => $robokassa::IS_TEST,
             ],
         ]);
     }

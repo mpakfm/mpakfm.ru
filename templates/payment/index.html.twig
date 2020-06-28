@@ -33,8 +33,9 @@
                             <p>Форма оплаты различных работ и услуг по программированию и администрированию.</p>
                             <p>Ставка {{ rate }}р/час. Вы можете указать количество часов или сразу сумму для оплаты. Введите email и назначение платежа. Для организаций необходимо заполнить название и ИНН. Это необходимо для заполнения чека. Чек будет выслан на указанный емайл. Я работаю в налоговом режиме НПД и чеки формируются в программе "Мой налог".</p>
                             <form id="payment-form" method="post" name="payment" action="{{ robokassa.url }}">
-
+                                {% if robokassa.test %}
                                 <input type="hidden" name="IsTest" value="1">
+                                {% endif %}
                                 <input type="hidden" name="MerchantLogin" value="">
                                 <input type="hidden" name="OutSum" value="">
                                 <input type="hidden" name="InvId" value="">
