@@ -15,4 +15,20 @@ class IndexController extends BaseController
             'h1' => 'Сергей Фомин',
         ]);
     }
+
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contact()
+    {
+        return $this->redirectToRoute('index', [], 301);
+    }
+
+    /**
+     * @Route("/contact/", name="contact_slash")
+     */
+    public function contactSlash()
+    {
+        return $this->redirectToRoute('index', [], 301);
+    }
 }
