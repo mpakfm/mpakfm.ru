@@ -35,6 +35,8 @@
                             <p>Введите email и комментарий для платежа.</p>
                             <p>Чек будет выслан в течении суток.</p>
                             <form id="payment-form" method="post" name="payment" action="{{ robokassa.url }}">
+
+                                <input type="hidden" name="IsTest" value="1">
                                 <input type="hidden" name="MerchantLogin" value="">
                                 <input type="hidden" name="OutSum" value="">
                                 <input type="hidden" name="InvId" value="">

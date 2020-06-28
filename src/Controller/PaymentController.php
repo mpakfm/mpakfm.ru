@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\PaymentRepository;
 use App\Service\Robokassa;
 use Mpakfm\Printu;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,27 @@ class PaymentController extends BaseController
     /**
      * @Route("/payment/result", name="payment_result")
      */
-    public function result(Request $request)
+    public function result(Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
         $dt = new \DateTimeImmutable();
-        Printu::log($request->query, $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
+        $payment = $repository->find((int) $request->query->get('InvId'));
+
+        try {
+            Printu::log($request->query, $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
+            Printu::log($payment, $dt->format('H:i:s')."\t".'PaymentController::result $payment', 'file');
+
+            $robokassa->verify($payment, $request->query->get('SignatureValue'));
+            $payment->setResult(1);
+
+        } catch (\Throwable $exception) {
+            $payment->setResult(0);
+            $payment->setError($exception->getMessage());
+        }
+        $payment->setPaymented(new \DateTimeImmutable());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($payment);
+        $entityManager->flush();
 
         return $this->baseRender('payment/result.html.twig', [
             'h1' => 'Сергей Фомин',
@@ -34,7 +52,8 @@ class PaymentController extends BaseController
      */
     public function form(Request $request, Robokassa $robokassa)
     {
-        $postFields = $robokassa->makePayment($request);
+        $entityManager = $this->getDoctrine()->getManager();
+        $postFields = $robokassa->makePayment($request, $entityManager);
 
         return $this->json($postFields);
     }
@@ -83,7 +102,7 @@ class PaymentController extends BaseController
             'rate' => '1000',
             'robokassa' => [
                 'url' => $robokassa::$url,
-            ]
+            ],
         ]);
     }
 }
