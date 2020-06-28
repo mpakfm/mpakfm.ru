@@ -86,10 +86,10 @@ class PaymentController extends BaseController
         $paymentData = null;
 
         try {
-            $verified = $robokassa->verify($request, 1);
-            Printu::log($verified, $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify $verified', 'file');
+            $robokassa->verify($request, 1);
             $paymentData = [
                 'id' => $payment->getId(),
+                'email' => $payment->getEmail(),
                 'money' => $payment->getMoney(),
                 'description' => $payment->getDescription(),
                 'created' => $payment->getCreated(),
