@@ -604,3 +604,18 @@ a.dotted-link {
 .error input[type="text"], .error textarea {
   border-color: red;
 }
+
+.payment-logo {
+  display: inline-block;
+  position: absolute;
+  right: 40px;
+  bottom: 55px;
+}
+.payment-logo img {
+  height: 30px;
+}
+.payment-logo span {
+  display: block;
+  margin: 0px 0px 6px 8px;
+  font-size: 0.9em;
+}

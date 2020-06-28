@@ -10,16 +10,14 @@
             <div class="profile-content float-left">
                 <h1 class="name">{{ h1 }}</h1>
                 <h2 class="desc">Web Developer</h2>
-                <ul class="social list-inline">
-                    <!--<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>-->
+                <ul class="social list-inline xs-hidden">
                     <li class="list-inline-item"><a href="https://github.com/mpakfm"><i class="fab fa-github-alt"></i></a></li>
                     <li class="list-inline-item"><a href="https://ru.stackoverflow.com/users/353939/mpakfm"><i class="fab fa-stack-overflow"></i></a></li>
                     <li class="list-inline-item last-item"><a href="https://www.facebook.com/mpakfm"><i class="fab fa-facebook"></i></a></li>
                     <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
                 </ul>
             </div><!--//profile-->
-            <a class="btn btn-cta-primary float-right" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>
+            <a class="btn btn-cta-primary float-right xs-hidden" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>
         </div><!--//container-->
     </header><!--//header-->
 
@@ -55,7 +53,7 @@
                                     <input type="text" name="money" id="money" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="form-group js-valid">
-                                    <label for="email">Email:</label>
+                                    <label for="email">Ваш email для отправки чека:</label>
                                     <input type="text" name="email" id="email" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="form-group">
@@ -83,6 +81,10 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="button" id="js-btn-pay" class="btn btn-success" value="Оплатить">
+                                    <div class="payment-logo">
+                                        <span>комиссия 7%</span>
+                                        <img src="/build/images/logo-robokassa-m.png">
+                                    </div>
                                 </div>
                             </form>
 
@@ -100,7 +102,7 @@
                                 <li><i class="fas fa-map-marker-alt"></i><span class="sr-only">Город:</span>Москва, Россия</li>
                                 <li><i class="fas fa-envelope"></i><span class="sr-only">Email:</span><a href="mailto:info@mpakfm.ru">info@mpakfm.ru</a></li>
                                 <li><i class="fas fa-phone-alt"></i><span class="sr-only">Phone:</span><a href="tel:+79067945511">+7(906) 794-55-11</a></li>
-                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://www.mpakfm.ru">https://www.mpakfm.ru</a></li>
+                                <li><i class="fas fa-link"></i><span class="sr-only">Website:</span><a href="https://mpakfm.ru">https://mpakfm.ru</a></li>
                             </ul>
                         </div><!--//content-->
                     </div><!--//section-inner-->
