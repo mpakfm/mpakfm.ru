@@ -6,7 +6,6 @@ use App\Entity\Payment;
 use App\Repository\PaymentRepository;
 use App\Service\Robokassa;
 use Mpakfm\Printu;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,6 +63,7 @@ class PaymentController extends BaseController
     public function paymentStatus(string $status, Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
         $dt = new \DateTimeImmutable();
+        $invId = null;
         if ($request->query->get('InvId')) {
             Printu::log($request->query->all(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->query for '.$status, 'file');
             $invId = (int) $request->query->get('InvId');
@@ -72,20 +72,28 @@ class PaymentController extends BaseController
             $invId = (int) $request->request->get('InvId');
         }
         if (!$invId) {
-            throw new Exception('Empty payment id '.$invId);
+            return $this->redirectToRoute('payment');
         }
         $payment = $repository->find($invId);
         if (!$payment) {
-            throw new Exception('Unknown payment id '.$invId);
+            return $this->redirectToRoute('payment');
         }
 
         if (!in_array($status, $this->status)) {
             throw new HttpException(404, 'Страница не найдена');
         }
 
+        $paymentData = null;
+
         try {
             $verified = $robokassa->verify($request, 1);
             Printu::log($verified, $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify $verified', 'file');
+            $paymentData = [
+                'id' => $payment->getId(),
+                'money' => $payment->getMoney(),
+                'description' => $payment->getDescription(),
+                'created' => $payment->getCreated(),
+            ];
         } catch (\Throwable $exception) {
             Printu::log($exception->getMessage(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify exception', 'file');
         }
@@ -102,6 +110,7 @@ class PaymentController extends BaseController
             'request' => [
                 'status' => $status,
             ],
+            'payment' => $paymentData,
         ]);
     }
 

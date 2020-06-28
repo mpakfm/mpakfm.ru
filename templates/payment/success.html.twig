@@ -32,6 +32,26 @@
                         <div class="content">
                             <p>Успешно!</p>
                             <p>После получаения платежа я вышлю вам чек на указанный email.</p>
+                            {% if payment %}
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Сумма</th>
+                                        <th>Назначение</th>
+                                        <th>Дата платежа</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ payment.id }}</td>
+                                            <td>{{ payment.money }}</td>
+                                            <td>{{ payment.description }}</td>
+                                            <td>{{ payment.created|date("d.m.Y H:i:s") }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% endif %}
                         </div><!--//content-->
                     </div><!--//section-inner-->
                 </section><!--//section-->
