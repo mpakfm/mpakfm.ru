@@ -61,7 +61,7 @@ class PaymentController extends BaseController
     /**
      * @Route("/payment/{status}", name="payment_status")
      */
-    public function paymentStatus(string $status, Request $request, PaymentRepository $repository)
+    public function paymentStatus(string $status, Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
         $dt = new \DateTimeImmutable();
         if ($request->query->get('InvId')) {
@@ -78,13 +78,23 @@ class PaymentController extends BaseController
         if (!$payment) {
             throw new Exception('Unknown payment id '.$invId);
         }
-        $payment->setStatus($status);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($payment);
-        $entityManager->flush();
 
         if (!in_array($status, $this->status)) {
             throw new HttpException(404, 'Страница не найдена');
+        }
+
+        try {
+            $verified = $robokassa->verify($request);
+            Printu::log($verified, $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify $verified', 'file');
+        } catch (\Throwable $exception) {
+            Printu::log($exception->getMessage(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify exception', 'file');
+        }
+
+        if (is_null($payment->getStatus()) || '' == $payment->getStatus()) {
+            $payment->setStatus($status);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($payment);
+            $entityManager->flush();
         }
 
         return $this->baseRender('payment/'.$status.'.html.twig', [
