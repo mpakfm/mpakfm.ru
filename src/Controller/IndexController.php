@@ -13,6 +13,7 @@ class IndexController extends BaseController
     {
         return $this->baseRender('index/index.html.twig', [
             'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer',
         ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Mpakfm\Printu;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,8 +69,6 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
-        $dt = new \DateTimeImmutable();
-        Printu::log($this->password, $dt->format('d.m H:i:s')."\t".'eraseCredentials $this->password', 'file');
     }
 
     public function serialize()
@@ -126,6 +123,7 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
         return $this;
     }
 
