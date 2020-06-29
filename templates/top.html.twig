@@ -21,7 +21,12 @@
                 <li class="list-inline-item"><a href="https://github.com/mpakfm"><i class="fab fa-github-alt"></i></a></li>
                 <li class="list-inline-item"><a href="https://ru.stackoverflow.com/users/353939/mpakfm"><i class="fab fa-stack-overflow"></i></a></li>
                 <li class="list-inline-item last-item"><a href="https://www.facebook.com/mpakfm"><i class="fab fa-facebook"></i></a></li>
+                {% if bloglist %}
                 <li class="list-inline-item last-item"><a href="/blog" title="Блог"><i class="fas fa-blog"></i></a></li>
+                {% endif %}
+                {% if user %}
+                <li class="list-inline-item last-item"><a href="/blog/create" title="Новый пост"><i class="far fa-comment-alt"></i></a></li>
+                {% endif %}
                 <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
             </ul>
         </div><!--//profile-->

@@ -19,6 +19,11 @@ class BlogRepository extends ServiceEntityRepository
         parent::__construct($registry, Blog::class);
     }
 
+    public function getCount()
+    {
+        return $this->count([]);
+    }
+
     // /**
     //  * @return Blog[] Returns an array of Blog objects
     //  */

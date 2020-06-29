@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\SiteProperty;
 use App\Service\BasePropertizer;
 use Mpakfm\Printu;
@@ -30,10 +31,15 @@ class BaseController extends AbstractController
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
     {
         $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
+        $blogRepository = $this->getDoctrine()->getRepository(Blog::class);
         $basePropertizer = new BasePropertizer();
         $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
+        $blogListCount = $blogRepository->getCount();
         $parameters['siteProp'] = $siteProp;
         $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
+        $parameters['user'] = $this->getUser();
+        $parameters['bloglist'] = $blogListCount;
+        Printu::log($parameters['user'], 'user', 'file');
         if (null === $response) {
             $response = new Response();
         }

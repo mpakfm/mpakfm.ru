@@ -11,12 +11,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\LoginType;
 use App\Form\UserType;
-use App\Repository\SitePropertyRepository;
-use App\Service\BasePropertizer;
 use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -28,7 +25,7 @@ class RegistrationController extends AbstractController
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        throw new HttpException(404, 'Page not found');
+        //throw new HttpException(404, 'Page not found');
         // 1) постройте форму
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -39,9 +36,6 @@ class RegistrationController extends AbstractController
             // 3) Зашифруйте пароль (вы также можете сделать это через слушатель Doctrine)
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-            Printu::log($user->getPlainPassword(), 'registerAction form $user->getPlainPassword()', 'file');
-            Printu::log($user->getPassword(), 'registerAction form $user->getPassword()', 'file');
-            Printu::log($user, 'registerAction form $user', 'file');
 
             // 4) сохраните Пользователя!
             $em = $this->getDoctrine()->getManager();
