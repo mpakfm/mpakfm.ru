@@ -27,20 +27,19 @@ class ErrorsController extends AbstractController
             $exception = new HttpException(403, 'Access Denied');
         }
         $className = get_class($exception);
-        Printu::log($className, $dt->format('d.m H:i:s')."\t".'ErrorsController::show $className', 'file', 'errors.controller.log');
-        Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'ErrorsController::show $exception->getMessage()', 'file', 'errors.controller.log');
         switch ($className) {
             case'Symfony\\Component\\HttpKernel\\Exception\\HttpException':
             case'Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException':
                 $statusCode = $exception->getStatusCode();
                 $headers = $exception->getHeaders();
                 $errorText = $exception->getMessage();
+                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".' UA: '.$_SERVER['HTTP_USER_AGENT'].'; IP: '.$_SERVER['REMOTE_ADDR'], 'file', 'errors.404.log');
                 break;
             default:
                 $statusCode = '500';
                 $headers = [];
                 $errorText = 'Ошибка сервера';
-                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'Exception in file '.$exception->getFile().' in line '.$exception->getLine(), 'file', 'errors.controller.log');
+                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'Exception in file '.$exception->getFile().' in line '.$exception->getLine(), 'file', 'errors.500.log');
         }
 
         try {
