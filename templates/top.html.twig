@@ -28,6 +28,9 @@
                 <li class="list-inline-item last-item"><a href="/blog/create" title="Новый пост"><i class="far fa-comment-alt"></i></a></li>
                 {% endif %}
                 <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>
+                {% if user %}
+                <li class="list-inline-item last-item"><a href="/logout" title="Выход"><i class="fas fa-sign-out-alt"></i></a></li>
+                {% endif %}
             </ul>
         </div><!--//profile-->
         <a class="btn btn-cta-primary float-right xs-hidden" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a>

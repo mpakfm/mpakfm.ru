@@ -619,3 +619,19 @@ a.dotted-link {
   margin: 0px 0px 6px 8px;
   font-size: 0.9em;
 }
+
+.section-inner {
+  position: relative;
+}
+.content-datetime {
+  display: block;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  border: #DAE3E7 1px solid;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 0.8em;
+  background-color: #DAE3E7;
+  color: #778492;
+}

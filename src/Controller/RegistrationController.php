@@ -12,13 +12,12 @@ use App\Entity\User;
 use App\Form\LoginType;
 use App\Form\UserType;
 use Mpakfm\Printu;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class RegistrationController extends AbstractController
+class RegistrationController extends BaseController
 {
     /**
      * @Route("/signup", name="user_registration")
@@ -75,7 +74,9 @@ class RegistrationController extends AbstractController
 
         $form = $this->createForm(LoginType::class);
 
-        return $this->render('admin/signin.html.twig', [
+        return $this->baseRender('index/signin.html.twig', [
+            'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer',
             'last_username' => $lastUsername,
             'error' => $error,
             'form' => $form->createView(),
