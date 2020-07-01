@@ -58,6 +58,7 @@ class RegistrationController extends BaseController
 
     /**
      * @Route("/login", name="login")
+     * @throws \Exception
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
@@ -66,16 +67,14 @@ class RegistrationController extends BaseController
             return $this->redirectToRoute('index');
         }
         $dt = new \DateTimeImmutable();
-        Printu::log($request->query, $dt->format('d.m H:i:s')."\t".'login::login query', 'file');
-        // получить ошибку входа, если она есть
+        // Получить ошибку входа, если она есть
         $error = $authUtils->getLastAuthenticationError();
         if ($error) {
-            Printu::log($error->getMessage(), $dt->format('d.m H:i:s')."\t".'SecurityController::login error', 'file', 'error.log');
+            Printu::obj($error->getMessage())->dt()->title('SecurityController::login error')->response('file')->file('error')->show();
         }
 
-        // последнее имя пользователя, введенное пользователем
+        // Последнее имя пользователя, введенное пользователем
         $lastUsername = $authUtils->getLastUsername();
-        Printu::log($lastUsername, $dt->format('d.m H:i:s')."\t".'login::login $lastUsername', 'file');
 
         $form = $this->createForm(LoginType::class);
 

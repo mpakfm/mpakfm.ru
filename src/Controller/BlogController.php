@@ -21,10 +21,10 @@ class BlogController extends BaseController
         $dt = new \DateTimeImmutable();
         try {
             $file = $this->base64ToImage($request->request->get('a'), __DIR__.'/../../upload/img');
-            Printu::log($file, $dt->format('H:i:s')."\t".'fileupload $file', 'file');
+            Printu::obj($file)->title('fileupload $file')->response('file')->show();
             return $this->json(['result' => $file]);
         } catch (\Throwable $exception) {
-            Printu::log($exception->getMessage(), $dt->format('H:i:s')."\t".'fileupload $exception getMessage', 'file');
+            Printu::obj($exception->getMessage())->dt()->title('fileupload $exception getMessage')->response('file')->show();
             return $this->json(['result' => $exception->getMessage()]);
         }
     }
@@ -38,9 +38,8 @@ class BlogController extends BaseController
 
         $data = explode(',', $base64String);
         $source = imagecreatefromstring(base64_decode($data[1]));
-        Printu::log($source, $dt->format('H:i:s')."\t".'base64ToImage $source', 'file');
-        Printu::log($globalType, $dt->format('H:i:s')."\t".'base64ToImage $globalType', 'file');
-        //Printu::log(getimagesize($source), $dt->format('H:i:s')."\t".'base64ToImage getimagesize', 'file');
+        Printu::obj($source)->dt()->title('base64ToImage $source')->response('file')->show();
+        Printu::obj($globalType)->dt()->title('base64ToImage $globalType')->response('file')->show();
 
         if ('png' == $globalType) {
             $res = imagepng($source, $outputFile.'.png');
@@ -52,7 +51,7 @@ class BlogController extends BaseController
             echo 'This file type is not supported, or the input data is corrupted! ('.$globalType.')';
             $res = false;
         }
-        Printu::log($res, $dt->format('H:i:s')."\t".'base64ToImage $res', 'file');
+        Printu::obj($res)->dt()->title('base64ToImage $res')->response('file')->show();
         imagedestroy($source);
 
         return $outputFile;

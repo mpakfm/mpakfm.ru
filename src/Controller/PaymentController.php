@@ -24,18 +24,16 @@ class PaymentController extends BaseController
         try {
             if ($request->query->get('InvId')) {
                 $payment = $repository->find((int) $request->query->get('InvId'));
-                Printu::log($request->query->all(), $dt->format('H:i:s')."\t".'PaymentController::result $request->query', 'file');
             } elseif ($request->request->get('InvId')) {
                 $payment = $repository->find((int) $request->request->get('InvId'));
-                Printu::log($request->request->all(), $dt->format('H:i:s')."\t".'PaymentController::result $request->request', 'file');
             }
-            Printu::log($payment, $dt->format('H:i:s')."\t".'PaymentController::result $payment', 'file');
 
             $robokassa->verify($request, 2);
             $payment->setResult(1);
         } catch (\Throwable $exception) {
             $payment->setResult(0);
             $payment->setError($exception->getMessage());
+            Printu::obj($exception->getMessage())->dt()->title('Payment::result exception in file '.$exception->getFile().' in line '.$exception->getLine())->response('file')->file('error')->show();
         }
         $payment->setPaymented(new \DateTimeImmutable());
 
@@ -66,10 +64,8 @@ class PaymentController extends BaseController
         $dt = new \DateTimeImmutable();
         $invId = null;
         if ($request->query->get('InvId')) {
-            Printu::log($request->query->all(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->query for '.$status, 'file');
             $invId = (int) $request->query->get('InvId');
         } elseif ($request->request->get('InvId')) {
-            Printu::log($request->request->all(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus $request->request for '.$status, 'file');
             $invId = (int) $request->request->get('InvId');
         }
         if (!$invId) {
@@ -96,7 +92,7 @@ class PaymentController extends BaseController
                 'created' => $payment->getCreated(),
             ];
         } catch (\Throwable $exception) {
-            Printu::log($exception->getMessage(), $dt->format('H:i:s')."\t".'PaymentController::paymentStatus verify exception', 'file');
+            Printu::obj($exception->getMessage())->dt()->title('PaymentController::paymentStatus verify exception')->response('file')->file('error')->show();
         }
 
         if (is_null($payment->getStatus()) || '' == $payment->getStatus()) {
@@ -122,6 +118,7 @@ class PaymentController extends BaseController
     public function index(Robokassa $robokassa)
     {
         $this->preLoad();
+
         return $this->baseRender('payment/index.html.twig', [
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer / Оплата',

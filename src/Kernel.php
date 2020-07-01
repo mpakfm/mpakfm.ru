@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -26,3 +27,5 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}.yaml');
     }
 }
+
+Printu::setPath(__DIR__.'/../var/log');

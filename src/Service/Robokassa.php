@@ -9,7 +9,6 @@
 namespace App\Service;
 
 use App\Entity\Payment;
-use Mpakfm\Printu;
 use Symfony\Component\HttpFoundation\Request;
 
 class Robokassa
@@ -56,12 +55,9 @@ class Robokassa
             $str = $request->request->get('OutSum').":{$request->request->get('InvId')}:".$password;
             $hash = $request->request->get('SignatureValue');
         }
-        Printu::log($str, 'Robokassa::verify $str', 'file');
         $crc = hash(static::ALGO, $str);
         $crc = strtoupper($crc);
         $hash = strtoupper($hash);
-        Printu::log($crc, 'Robokassa::verify $crc', 'file');
-        Printu::log($hash, 'Robokassa::verify SignatureValue', 'file');
         if ($hash != $crc) {
             throw new \Exception('Wrong hash');
         }
@@ -71,8 +67,6 @@ class Robokassa
     public function validate(Payment $payment): bool
     {
         if ('' == $payment->getEmail() || 0 == $payment->getMoney()) {
-            Printu::log($payment->getEmail(), 'Robokassa::validate $payment->getEmail()', 'file');
-            Printu::log($payment->getMoney(), 'Robokassa::validate $payment->getMoney()', 'file');
             throw new \Exception('Wrong parametrs');
         }
         return true;
@@ -102,12 +96,8 @@ class Robokassa
         $entityManager->persist($payment);
         $entityManager->flush();
 
-        //$crc = md5("$mrh_login:$out_summ:$inv_id:$mrh_pass1:Shp_item=$shp_item");
         $str = "{$this->merchantLogin}:".$money.":{$payment->getId()}:".$this->getPasswordOne(static::IS_TEST);
         $crc = hash(static::ALGO, $str);
-        Printu::log($this->getPasswordOne(static::IS_TEST), 'getPasswordOne', 'file');
-        Printu::log($str, '$str', 'file');
-        Printu::log($crc, '$crc', 'file');
 
         $postData = [
             'MerchantLogin' => $payment->getMerchant(),
@@ -120,7 +110,6 @@ class Robokassa
             'Email' => $payment->getEmail(),
             'Encoding' => $this->encoding,
         ];
-        Printu::log($postData, 'postData', 'file');
 
         return $postData;
     }
