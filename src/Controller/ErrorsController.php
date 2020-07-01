@@ -22,7 +22,6 @@ class ErrorsController extends AbstractController
 {
     public function show(\Throwable $exception, DebugLoggerInterface $logger = null, Request $request, SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer)
     {
-        $dt = new \DateTimeImmutable();
         if ('Access Denied.' == $exception->getMessage()) {
             $exception = new HttpException(403, 'Access Denied');
         }
@@ -33,13 +32,13 @@ class ErrorsController extends AbstractController
                 $statusCode = $exception->getStatusCode();
                 $headers = $exception->getHeaders();
                 $errorText = $exception->getMessage();
-                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".' UA: '.$_SERVER['HTTP_USER_AGENT'].'; IP: '.$_SERVER['REMOTE_ADDR'], 'file', 'errors.404.log');
+                Printu::obj($exception->getMessage())->dt()->title(' UA: '.$_SERVER['HTTP_USER_AGENT'].'; IP: '.$_SERVER['REMOTE_ADDR'])->response('file')->file('errors.404.log')->show();
                 break;
             default:
                 $statusCode = '500';
                 $headers = [];
                 $errorText = 'Ошибка сервера';
-                Printu::log($exception->getMessage(), $dt->format('d.m H:i:s')."\t".'Exception in file '.$exception->getFile().' in line '.$exception->getLine(), 'file', 'errors.500.log');
+                Printu::obj($exception->getMessage())->dt()->title('Exception in file '.$exception->getFile().' in line '.$exception->getLine())->response('file')->file('errors.500.log')->show();
         }
 
         try {

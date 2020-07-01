@@ -11,7 +11,6 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Entity\SiteProperty;
 use App\Service\BasePropertizer;
-use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,11 +37,6 @@ class BaseController extends AbstractController
 
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
     {
-        if (!isset($parameters['meta'])) {
-            Printu::log('not isset', 'BaseController $parameters meta', 'file');
-        } else {
-            Printu::log($parameters['meta'], 'BaseController $parameters meta', 'file');
-        }
         $blogRepository = $this->getDoctrine()->getRepository(Blog::class);
         $blogListCount = $blogRepository->getCount();
         $parameters['siteProp'] = $this->siteProperties;
@@ -66,7 +60,7 @@ class BaseController extends AbstractController
                 'keywords' => $this->siteProperties->getMetaKeywords(),
             ];
         }
-        Printu::log($parameters['meta'], 'BaseController parametrs', 'file');
+
         if (null === $response) {
             $response = new Response();
         }
