@@ -3,10 +3,12 @@
 
     .header {
         text-align: center;
+        padding-top: 5px;
     }
     .header .profile-image {
         float: none !important;
         margin: 0 auto;
+        max-width: 40%;
     }
     
     .header .profile-content {
@@ -15,11 +17,17 @@
     }
     
     .header .btn {
-        margin-top: 30px;
+        margin-top: 10px;
         float: none !important;
     }
     .project-image {
         margin-bottom: 15px;
+    }
+
+    .header .profile-content h1.name {
+        font-size: 1.7em;
+        font-weight: 600;
+        margin-top: 10px;
     }
 
     .xs-hidden {

@@ -63,6 +63,7 @@ class BlogController extends BaseController
      */
     public function post_create(Request $request)
     {
+        $this->preLoad();
         if (!$this->getUser()) {
             throw new NotFoundHttpException();
         }
@@ -108,6 +109,8 @@ class BlogController extends BaseController
      */
     public function element(string $post, BlogRepository $repository)
     {
+        $this->preLoad();
+
         $criteria = [
             'code' => $post,
         ];
@@ -117,6 +120,10 @@ class BlogController extends BaseController
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer / Блог',
             'element' => $elements[0],
+            'meta' => [
+                'description' => $this->siteProperties->getMetaDescription().' / Блог, журнал программиста',
+                'keywords' => $this->siteProperties->getMetaKeywords().', блог, журнал программиста',
+            ],
         ]);
     }
 
@@ -125,6 +132,7 @@ class BlogController extends BaseController
      */
     public function index(Request $request, BlogRepository $repository, int $offset = null)
     {
+        $this->preLoad();
         $criteria = ['hidden' => 0];
         $order = ['id' => 'desc'];
         $limit = 20;
@@ -134,6 +142,11 @@ class BlogController extends BaseController
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer / Блог',
             'elements' => $elements,
+            'meta' => [
+                'title' => $this->siteProperties->getMetaTitle().' / Блог',
+                'description' => $this->siteProperties->getMetaDescription().' / Блог, журнал программиста',
+                'keywords' => $this->siteProperties->getMetaKeywords().', блог, журнал программиста',
+            ],
         ]);
     }
 }
