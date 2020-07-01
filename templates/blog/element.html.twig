@@ -6,7 +6,7 @@
     <!-- ******HEADER****** -->
     {% include "top.html.twig" %}
 
-    <div class="container sections-wrapper">
+    <div class="container sections-wrapper blog">
         <div class="row">
             <div class="primary col-lg-8 col-12">
                 <section class="latest section">
@@ -14,6 +14,7 @@
                         <h2 class="heading">{{ element.name }}</h2>
                         <div class="content-datetime">{{ element.getCreatedRussian('d f H:i') }}</div>
                         <div class="content">
+                            {{ element.getShortText()|raw }}
                             {{ element.getFullText()|raw }}
                         </div><!--//content-->
                     </div><!--//section-inner-->

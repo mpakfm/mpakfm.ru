@@ -39,7 +39,6 @@ class BaseController extends AbstractController
         $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
         $parameters['user'] = $this->getUser();
         $parameters['bloglist'] = $blogListCount;
-        Printu::log($parameters['user'], 'user', 'file');
         if (null === $response) {
             $response = new Response();
         }

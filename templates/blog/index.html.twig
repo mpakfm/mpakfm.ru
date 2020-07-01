@@ -3,27 +3,10 @@
 {% block title %}{{ siteProp.getMetaTitle() }}{% endblock %}
 
 {% block body %}
-    <style>
-        .section-inner {
-            position: relative;
-        }
-        .content-datetime {
-            display: block;
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            border: #DAE3E7 1px solid;
-            border-radius: 4px;
-            padding: 2px;
-            font-size: 0.8em;
-            background-color: #DAE3E7;
-            color: #778492;
-        }
-    </style>
     <!-- ******HEADER****** -->
     {% include "top.html.twig" %}
 
-    <div class="container sections-wrapper">
+    <div class="container sections-wrapper blog">
         <div class="row">
             <div class="primary col-lg-8 col-12">
                 {% for item in elements %}
@@ -33,6 +16,11 @@
                         <div class="content-datetime">{{ item.getCreatedRussian('d f H:i') }}</div>
                         <div class="content">
                             {{ item.getShortText()|raw }}
+                            {% if item.getFullText() != '' %}
+                                <div class="post-more">
+                                    <a href="/blog/{{ item.code }}">далее</a>
+                                </div>
+                            {% endif %}
                         </div><!--//content-->
                     </div><!--//section-inner-->
                 </section>

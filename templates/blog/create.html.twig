@@ -6,7 +6,7 @@
     <!-- ******HEADER****** -->
     {% include "top.html.twig" %}
 
-    <div class="container sections-wrapper">
+    <div class="container sections-wrapper" xmlns="http://www.w3.org/1999/html">
         <div class="row">
             <div class="primary col-lg-8 col-12">
                 <section class="latest section">
@@ -14,8 +14,15 @@
                         <h2 class="heading">Создать пост</h2>
                         <div class="content">
                             {{ form_start(form) }}
-
+                            {{ form_widget(form) }}
                             {{ form_end(form) }}
+
+                            {#
+                            <p>base64: <br> <textarea id="base64" placeholder="" style="width:100%"></textarea></p>
+                            <img id="contenteditable" src="">
+                            <hr>
+                            <img id="done" src="">
+                            #}
                         </div><!--//content-->
                     </div><!--//section-inner-->
                 </section>
