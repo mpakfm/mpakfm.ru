@@ -20,25 +20,53 @@ class BaseController extends AbstractController
     public $isCached = true;
     public $cacheTime = 3600;
 
+    /**
+     * @var SiteProperty
+     */
+    public $siteProperties;
+
     public function __construct()
     {
     }
 
-    public function preLoad($name = 'main')
+    public function preLoad()
     {
+        $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
+        $basePropertizer = new BasePropertizer();
+        $this->siteProperties = $basePropertizer->setMetaProperties($sitePropertyRepository);
     }
 
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
     {
-        $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
+        if (!isset($parameters['meta'])) {
+            Printu::log('not isset', 'BaseController $parameters meta', 'file');
+        } else {
+            Printu::log($parameters['meta'], 'BaseController $parameters meta', 'file');
+        }
         $blogRepository = $this->getDoctrine()->getRepository(Blog::class);
-        $basePropertizer = new BasePropertizer();
-        $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
         $blogListCount = $blogRepository->getCount();
-        $parameters['siteProp'] = $siteProp;
+        $parameters['siteProp'] = $this->siteProperties;
         $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
         $parameters['user'] = $this->getUser();
         $parameters['bloglist'] = $blogListCount;
+        if (isset($parameters['meta'])) {
+            if (!isset($parameters['meta']['title'])) {
+                $parameters['meta']['title'] = $this->siteProperties->getMetaTitle();
+            }
+            if (!isset($parameters['meta']['title'])) {
+                $parameters['meta']['description'] = $this->siteProperties->getMetaDescription();
+            }
+            if (!isset($parameters['meta']['title'])) {
+                $parameters['meta']['keywords'] = $this->siteProperties->getMetaKeywords();
+            }
+        } else {
+            $parameters['meta'] = [
+                'title' => $this->siteProperties->getMetaTitle(),
+                'description' => $this->siteProperties->getMetaDescription(),
+                'keywords' => $this->siteProperties->getMetaKeywords(),
+            ];
+        }
+        Printu::log($parameters['meta'], 'BaseController parametrs', 'file');
         if (null === $response) {
             $response = new Response();
         }
@@ -54,7 +82,7 @@ class BaseController extends AbstractController
         $response->setExpires($dtMonth);
         // устанавливает заголовки для кэширования одним вызовом
         $response->setCache([
-            'last_modified' => $last_modified ? $last_modified : $siteProp->getLastUpdate(),
+            'last_modified' => $last_modified ? $last_modified : $this->siteProperties->getLastUpdate(),
             'max_age' => $this->cacheTime ? $this->cacheTime : 0,
             's_maxage' => $this->cacheTime ? $this->cacheTime : 0,
             'private' => true,

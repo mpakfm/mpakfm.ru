@@ -51,6 +51,11 @@ class ErrorsController extends AbstractController
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
                 'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'meta' => [
+                    'title' => $siteProp->getMetaTitle(),
+                    'description' => $siteProp->getMetaDescription(),
+                    'keywords' => $siteProp->getMetaKeywords(),
+                ],
             ], $response);
 
             return $result;
@@ -61,6 +66,11 @@ class ErrorsController extends AbstractController
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
                 'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'meta' => [
+                    'title' => $siteProp->getMetaTitle(),
+                    'description' => $siteProp->getMetaDescription(),
+                    'keywords' => $siteProp->getMetaKeywords(),
+                ],
             ], $response);
         } catch (\Throwable $exceptionRender) {
             return $this->render('bundles/TwigBundle/Exception/error.html.twig', [
@@ -69,6 +79,11 @@ class ErrorsController extends AbstractController
                 'error_text' => $errorText,
                 'siteProp' => $siteProp,
                 'gtag' => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'meta' => [
+                    'title' => $siteProp->getMetaTitle(),
+                    'description' => $siteProp->getMetaDescription(),
+                    'keywords' => $siteProp->getMetaKeywords(),
+                ],
             ], $response);
         }
     }

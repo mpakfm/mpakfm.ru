@@ -11,6 +11,7 @@ class IndexController extends BaseController
      */
     public function index()
     {
+        $this->preLoad();
         return $this->baseRender('index/index.html.twig', [
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer',
