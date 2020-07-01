@@ -17,3 +17,6 @@ symfony.lock
 node_modules
 yarn.lock
 yarn-error.log
+
+### ohter
+/public/yandex_85c0633cd3554abd.html
