@@ -101,7 +101,7 @@ class Blog
 
     public function setShortText(?string $short_text): self
     {
-        $this->short_text = $short_text;
+        $this->short_text = $this->textFormatted($short_text);
 
         return $this;
     }
@@ -113,7 +113,7 @@ class Blog
 
     public function setFullText(?string $full_text): self
     {
-        $this->full_text = $full_text;
+        $this->full_text = $this->textFormatted($full_text);
 
         return $this;
     }
@@ -150,5 +150,14 @@ class Blog
     public function getUpdatedRussian(string $format, int $case = RussianDateTime::FORMAT_BY)
     {
         return RussianDateTime::format($format, $this->updated, $case);
+    }
+
+    public function textFormatted(string $text): string
+    {
+        $text = strip_tags($text, '<p><br><b><i><h2><h3><h4><h5><img>');
+        preg_match('/[\r\n]{2,}/Uism', $text, $matches);
+        $text = preg_replace('/[\r\n]{2,}/Uism', "\n<p>", $text);
+        $text = str_replace(['<br>', '<br/>'], '<p>', $text);
+        return $text;
     }
 }

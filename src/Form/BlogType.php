@@ -29,7 +29,6 @@ class BlogType extends AbstractType
             ])
             ->add('short_text', TextareaType::class, [
                 'label' => false,
-                'required' => false,
                 'attr' => [
                     'placeholder' => 'Превью',
                 ],
@@ -39,6 +38,7 @@ class BlogType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Полный текст',
+                    'class' => 'textarea-big-size',
                 ],
             ])
             ->add('save', SubmitType::class, [
@@ -55,4 +55,5 @@ class BlogType extends AbstractType
             'data_class' => Blog::class,
         ));
     }
+
 }

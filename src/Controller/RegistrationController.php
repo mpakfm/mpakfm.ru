@@ -24,7 +24,7 @@ class RegistrationController extends BaseController
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        //throw new HttpException(404, 'Page not found');
+        throw new HttpException(404, 'Page not found');
         // 1) постройте форму
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -60,6 +60,9 @@ class RegistrationController extends BaseController
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
         $dt = new \DateTimeImmutable();
         Printu::log($request->query, $dt->format('d.m H:i:s')."\t".'login::login query', 'file');
         // получить ошибку входа, если она есть
