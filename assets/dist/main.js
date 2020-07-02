@@ -20,9 +20,9 @@ jQuery(document).ready(function($) {
     $('.level-label').tooltip();
     
     /* Github Calendar - https://github.com/IonicaBizau/github-calendar */
-    if ($('#github-graph').length) {
-        GitHubCalendar("#github-graph", "mpakfm", { responsive: true });
-    }
+    //if ($('#github-graph').length) {
+    //    GitHubCalendar("#github-graph", "mpakfm", { responsive: true });
+    //}
     
     /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
     //GitHubActivity.feed({ username: "mpakfm", selector: "#ghfeed" });
