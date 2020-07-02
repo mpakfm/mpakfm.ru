@@ -115,6 +115,10 @@ class BlogController extends BaseController
         ];
         $elements = $repository->findBy($criteria, [], 1);
 
+        if (!$elements) {
+            throw new NotFoundHttpException('Страница не найдена');
+        }
+
         return $this->baseRender('blog/element.html.twig', [
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer / Блог',
