@@ -20,6 +20,15 @@ class BlogController extends BaseController
      */
     public function action(Request $request)
     {
+        $user = $this->getUser();
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            $this->jsonResult = false;
+            $this->jsonError[] = 'Access denied';
+
+            return $this->makeJsonResult([
+                'id' => $request->request->get('id'),
+            ]);
+        }
         $em = $this->getDoctrine()->getManager();
         $blog = null;
         if ($request->request->get('id')) {
