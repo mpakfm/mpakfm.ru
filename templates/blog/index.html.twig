@@ -8,7 +8,7 @@
         <div class="row">
             <div class="primary col-lg-8 col-12">
                 {% for item in elements %}
-                <section class="latest section">
+                <section data-post="{{ item.id }}" class="latest section {% if item.getHidden() %}post-hidden{% endif %}">
                     <div class="section-inner shadow-sm rounded">
                         <h2 class="heading"><a href="/blog/{{ item.code }}">{{ item.name }}</a></h2>
                         <div class="content-datetime">{{ item.getCreatedRussian('d f H:i') }}</div>
@@ -17,6 +17,12 @@
                             {% if item.getFullText() != '' %}
                                 <div class="post-more">
                                     <a href="/blog/{{ item.code }}">далее</a>
+                                </div>
+                            {% endif %}
+                            {% if access_edit %}
+                                <div class="post-action">
+                                    <button class="js-post-delete btn btn-sm btn-danger" data-id="{{ item.id }}">удалить</button>
+                                    <button class="js-post-hidden btn btn-sm {% if item.getHidden() %}btn-info{% else %}btn-secondary{% endif %}" data-id="{{ item.id }}">{% if item.getHidden() %}показать{% else %}спрятать{% endif %}</button>
                                 </div>
                             {% endif %}
                         </div><!--//content-->
