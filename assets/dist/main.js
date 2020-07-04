@@ -108,6 +108,13 @@ function paymentFormHandler() {
     $('#foreign_organization').click(function (){
         $('.form-group.organization.foreign_organization').toggle();
     });
+    $('#access').click(function(){
+        if (!$(this).prop('checked')) {
+            $('#js-btn-pay').prop('disabled', true);
+        } else {
+            $('#js-btn-pay').prop('disabled', false);
+        }
+    });
     $('.js-valid input, .js-valid textarea').focusout(function(){
         paymentFieldValidation(this);
     });

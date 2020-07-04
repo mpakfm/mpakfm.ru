@@ -593,6 +593,16 @@ a.dotted-link {
     display: none;
 }
 
+/* Right side */
+.personal-info {
+    display: block;
+    margin-left: 30px;
+    margin-top: -25px;
+}
+.personal-info p {
+    margin-bottom: 0px;
+}
+
 /* Payment form */
 
 .form-checkbox {
@@ -657,6 +667,10 @@ a.dotted-link {
 }
 
 // all together
+.popups {
+  display: none;
+}
+
 .width-95 {
   width: 95% !important;
 }
