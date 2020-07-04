@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Form\BlogType;
 use App\Repository\BlogRepository;
-use Mpakfm\Printu;
+use App\Service\JsonDataResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,48 +13,59 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends BaseController
 {
+    use JsonDataResponse;
+
     /**
-     * @Route("/blog/fileupload", name="blog_fileupload")
+     * @Route("/blog/action", name="blog_action")
      */
-    public function fileupload(Request $request)
+    public function action(Request $request)
     {
-        $dt = new \DateTimeImmutable();
-        try {
-            $file = $this->base64ToImage($request->request->get('a'), __DIR__.'/../../upload/img');
-            Printu::obj($file)->title('fileupload $file')->response('file')->show();
-            return $this->json(['result' => $file]);
-        } catch (\Throwable $exception) {
-            Printu::obj($exception->getMessage())->dt()->title('fileupload $exception getMessage')->response('file')->show();
-            return $this->json(['result' => $exception->getMessage()]);
+        $em = $this->getDoctrine()->getManager();
+        $blog = null;
+        if ($request->request->get('id')) {
+            $repo = $em->getRepository(Blog::class);
+            $blog = $repo->findOneBy(['id' => $request->request->get('id')]);
         }
+        if (!$blog) {
+            throw new \Exception('Unknown post');
+        }
+        switch ($request->request->get('action')) {
+            case'hidden':
+                $data = $this->hiddenAction($blog);
+                break;
+            case'delete':
+                $data = $this->deleteAction($blog);
+                break;
+        }
+        $this->jsonResult = true;
+
+        return $this->makeJsonResult($data);
     }
 
-    private function base64ToImage(string $base64String, string $outputFile)
+    private function hiddenAction(Blog $blog): array
     {
-        $dt = new \DateTimeImmutable();
-        $type0 = explode(';', $base64String);
-        $type1 = explode('/', $type0[0]);
-        $globalType = $type1[1];
+        $blog->toggleHidden();
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Blog::class);
+        $repo->saveItem($blog);
 
-        $data = explode(',', $base64String);
-        $source = imagecreatefromstring(base64_decode($data[1]));
-        Printu::obj($source)->dt()->title('base64ToImage $source')->response('file')->show();
-        Printu::obj($globalType)->dt()->title('base64ToImage $globalType')->response('file')->show();
+        return [
+            'id' => $blog->getId(),
+            'hidden' => $blog->getHidden(),
+        ];
+    }
 
-        if ('png' == $globalType) {
-            $res = imagepng($source, $outputFile.'.png');
-            exec('optipng -o7 img.png');
-        } elseif ('jpg' == $globalType || 'pjpeg' == $globalType || 'jpeg' == $globalType || 'plain' == $globalType) {
-            $res = imagejpeg($source, $outputFile.'.'.$globalType);
-            exec('jpegoptim img');
-        } else {
-            echo 'This file type is not supported, or the input data is corrupted! ('.$globalType.')';
-            $res = false;
-        }
-        Printu::obj($res)->dt()->title('base64ToImage $res')->response('file')->show();
-        imagedestroy($source);
+    private function deleteAction(Blog $blog): array
+    {
+        $id = $blog->getId();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($blog);
+        $em->flush();
 
-        return $outputFile;
+        return [
+            'id' => $id,
+            'deleted' => true,
+        ];
     }
 
     /**
@@ -74,7 +85,6 @@ class BlogController extends BaseController
             $em = $this->getDoctrine()->getManager();
 
             $blogPost->setCreated(new \DateTimeImmutable());
-            $blogPost->setHidden(false);
             $strInput = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', ' ', '/', '\\', '+', '`', '~'];
             $strOutput = ['a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'iy', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'tc', 'ch', 'sh', 'csh', '', 'i', '', 'e', 'yu', 'ya', '_', '_', '_', '-', '-', '-'];
             $code = mb_strtolower(preg_replace("/\s+/", ' ', $blogPost->getName()));
@@ -136,7 +146,11 @@ class BlogController extends BaseController
     public function index(Request $request, BlogRepository $repository, int $offset = null)
     {
         $this->preLoad();
-        $criteria = ['hidden' => 0];
+        $criteria = [];
+        $user = $this->getUser();
+        if (!$user) {
+            $criteria['hidden'] = 0;
+        }
         $order = ['id' => 'desc'];
         $limit = 20;
         $elements = $repository->findBy($criteria, $order, $limit, $offset);
@@ -145,6 +159,7 @@ class BlogController extends BaseController
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer / Блог',
             'elements' => $elements,
+            'access_edit' => ($user && in_array('ROLE_USER', $user->getRoles()) ? true : false),
             'meta' => [
                 'title' => $this->siteProperties->getMetaTitle().' / Блог',
                 'description' => $this->siteProperties->getMetaDescription().' / Блог, журнал программиста',

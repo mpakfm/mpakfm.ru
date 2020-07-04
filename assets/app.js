@@ -8,4 +8,6 @@ global.GitHubActivity = GitHubActivity;
 var GitHubCalendar = require('github-calendar');
 global.GitHubCalendar = GitHubCalendar;
 require('@fancyapps/fancybox/dist/jquery.fancybox.min');
+require('tinymce')
 require('./dist/main');
+require('./dist/blog');

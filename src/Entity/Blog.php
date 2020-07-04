@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Mpakfm\Printu;
 use Mpakfm\RussianDateTime;
 
 /**
@@ -152,12 +153,24 @@ class Blog
         return RussianDateTime::format($format, $this->updated, $case);
     }
 
-    public function textFormatted(string $text): string
+    public function textFormatted(string $text, bool $rnToBr = false): string
     {
-        $text = strip_tags($text, '<p><br><b><i><h2><h3><h4><h5><img>');
-        preg_match('/[\r\n]{2,}/Uism', $text, $matches);
-        $text = preg_replace('/[\r\n]{2,}/Uism', "\n<p>", $text);
-        $text = str_replace(['<br>', '<br/>'], '<p>', $text);
+        $text = strip_tags($text, '<p><span><br><b><i><h2><h3><h4><h5><img><iframe><ul><li><pre><code>');
+        if ($rnToBr) {
+            preg_match('/[\r\n]{2,}/Uism', $text, $matches);
+            $text = preg_replace('/[\r\n]{2,}/Uism', "\n<p>", $text);
+            $text = str_replace(['<br>', '<br/>'], '<p>', $text);
+        }
         return $text;
+    }
+
+    public function toggleHidden()
+    {
+        if ($this->hidden) {
+            $this->hidden = false;
+        } else {
+            $this->hidden = true;
+        }
+        Printu::obj($this->getHidden())->title('blog::toggleHidden')->dt();
     }
 }

@@ -632,6 +632,9 @@ a.dotted-link {
 
 /* BLOG */
 
+.blog .post-hidden .section-inner{
+  background-color: #ddd;
+}
 .blog .section-inner {
   position: relative;
 }
@@ -660,8 +663,28 @@ a.dotted-link {
   right: 0px;
   text-align: right;
 }
+.blog .post-action {
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+  text-align: left;
+}
+.blog .post-action .btn {
+  display: inline-flex;
+}
+.blog code {
+  font-family: monospace;
+  font-size: 0.75em;
+  background-color: #f7f7f7;
+  border: #DDDDDD 1px solid;
+  padding: 20px;
+  color: black;
+}
 
 // fields
+.textarea-middle-size {
+  height: 250px !important;
+}
 .textarea-big-size {
   height: 450px !important;
 }

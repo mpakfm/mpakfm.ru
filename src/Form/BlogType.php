@@ -10,6 +10,7 @@ namespace App\Form;
 
 use App\Entity\Blog;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -39,6 +40,13 @@ class BlogType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Полный текст',
                     'class' => 'textarea-big-size',
+                ],
+            ])
+            ->add('hidden', CheckboxType::class,[
+                'label' => 'Невидимое сообщение',
+                'required' => false,
+                'attr' => [
+                    'class' => '',
                 ],
             ])
             ->add('save', SubmitType::class, [
