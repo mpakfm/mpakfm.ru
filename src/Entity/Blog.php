@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Mpakfm\Printu;
 use Mpakfm\RussianDateTime;
 
 /**
@@ -171,6 +170,5 @@ class Blog
         } else {
             $this->hidden = true;
         }
-        Printu::obj($this->getHidden())->title('blog::toggleHidden')->dt();
     }
 }
