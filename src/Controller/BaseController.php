@@ -11,7 +11,9 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Entity\SiteProperty;
 use App\Service\BasePropertizer;
+use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseController extends AbstractController
@@ -23,22 +25,25 @@ class BaseController extends AbstractController
      * @var SiteProperty
      */
     public $siteProperties;
+    public $canonical;
 
     public function __construct()
     {
     }
 
-    public function preLoad()
+    public function preLoad(Request $request)
     {
         $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
         $basePropertizer = new BasePropertizer();
         $this->siteProperties = $basePropertizer->setMetaProperties($sitePropertyRepository);
+        $this->canonical = $request->server->get('REQUEST_SCHEME').'://'.$request->server->get('SERVER_NAME').$request->server->get('REQUEST_URI');
     }
 
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
     {
         $blogRepository = $this->getDoctrine()->getRepository(Blog::class);
         $blogListCount = $blogRepository->getCount();
+        $parameters['canonical'] = $this->canonical;
         $parameters['siteProp'] = $this->siteProperties;
         $parameters['gtag'] = ('prod' == $_ENV['APP_ENV'] ? true : false);
         $parameters['user'] = $this->getUser();
