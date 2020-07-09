@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends BaseController
@@ -9,9 +10,10 @@ class IndexController extends BaseController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->preLoad();
+        $this->preLoad($request);
+
         return $this->baseRender('index/index.html.twig', [
             'h1' => 'Сергей Фомин',
             'h2' => 'Web Developer',

@@ -82,7 +82,7 @@ class BlogController extends BaseController
      */
     public function post_create(Request $request)
     {
-        $this->preLoad();
+        $this->preLoad($request);
         if (!$this->getUser()) {
             throw new NotFoundHttpException();
         }
@@ -125,9 +125,9 @@ class BlogController extends BaseController
     /**
      * @Route("/blog/{post}", name="blog_post")
      */
-    public function element(string $post, BlogRepository $repository)
+    public function element(Request $request, string $post, BlogRepository $repository)
     {
-        $this->preLoad();
+        $this->preLoad($request);
 
         $criteria = [
             'code' => $post,
@@ -154,7 +154,7 @@ class BlogController extends BaseController
      */
     public function index(Request $request, BlogRepository $repository, int $offset = null)
     {
-        $this->preLoad();
+        $this->preLoad($request);
         $criteria = [];
         $user = $this->getUser();
         if (!$user) {

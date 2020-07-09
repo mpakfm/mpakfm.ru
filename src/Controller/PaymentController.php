@@ -18,7 +18,7 @@ class PaymentController extends BaseController
      */
     public function result(Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
-        $this->preLoad();
+        $this->preLoad($request);
         $dt = new \DateTimeImmutable();
 
         try {
@@ -49,6 +49,7 @@ class PaymentController extends BaseController
      */
     public function form(Request $request, Robokassa $robokassa)
     {
+        $this->preLoad($request);
         $entityManager = $this->getDoctrine()->getManager();
         $postFields = $robokassa->makePayment($request, $entityManager);
 
@@ -60,7 +61,7 @@ class PaymentController extends BaseController
      */
     public function paymentStatus(string $status, Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
-        $this->preLoad();
+        $this->preLoad($request);
         $dt = new \DateTimeImmutable();
         $invId = null;
         if ($request->query->get('InvId')) {
@@ -115,9 +116,9 @@ class PaymentController extends BaseController
     /**
      * @Route("/payment", name="payment")
      */
-    public function index(Robokassa $robokassa)
+    public function index(Request $request, Robokassa $robokassa)
     {
-        $this->preLoad();
+        $this->preLoad($request);
 
         return $this->baseRender('payment/index.html.twig', [
             'h1' => 'Сергей Фомин',
