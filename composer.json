@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.10",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "mpakfm/printu": "^1.1",
         "mpakfm/russian-date-time": "^1.0",
         "symfony/asset": "5.1.*",

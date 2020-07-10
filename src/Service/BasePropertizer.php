@@ -17,9 +17,10 @@ class BasePropertizer
     {
         $result = $sitePropertyRepository->findAll();
         if (!$result) {
-            $result = [];
+            $result   = [];
             $result[] = new SiteProperty();
         }
+
         return $result[0];
     }
 }

@@ -1,0 +1,79 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude('var')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PhpCsFixer' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'binary_operator_spaces' => [
+            'default'   => null,
+            'operators' => [
+              // Объявление массивов
+              '=>'  => 'align_single_space',
+              // Операторы присваивания
+              '='   => 'align_single_space',
+              '&='  => 'align_single_space',
+              '.='  => 'align_single_space',
+              '/='  => 'align_single_space',
+              '-='  => 'align_single_space',
+              '%='  => 'align_single_space',
+              '*='  => 'align_single_space',
+              '|='  => 'align_single_space',
+              '+='  => 'align_single_space',
+              '<<=' => 'align_single_space',
+              '>>=' => 'align_single_space',
+              '^='  => 'align_single_space',
+              '**=' => 'align_single_space',
+              // Операторы вычислений
+              '|'   => 'single_space',
+              '^'   => 'single_space',
+              '+'   => 'single_space',
+              '-'   => 'single_space',
+              '&'   => 'single_space',
+              '*'   => 'single_space',
+              '/'   => 'single_space',
+              '%'   => 'single_space',
+              '**'  => 'single_space',
+              '>>'  => 'single_space',
+              '<<'  => 'single_space',
+              // Тернарный оператор
+              '??'  => 'single_space',
+              // Логические операторы
+              '<'   => 'single_space',
+              '>'   => 'single_space',
+              '&&'  => 'single_space',
+              '||'  => 'single_space',
+              '=='  => 'single_space',
+              '>='  => 'single_space',
+              '===' => 'single_space',
+              '!='  => 'single_space',
+              '<>'  => 'single_space',
+              '!==' => 'single_space',
+              '<='  => 'single_space',
+              '<=>' => 'single_space',
+              'and' => 'single_space',
+              'or'  => 'single_space',
+              'xor' => 'single_space',
+            ],
+        ],
+        'cast_spaces' => ['space' => 'single'],
+        'concat_space' => ['spacing' => 'one'],
+        'general_phpdoc_annotation_remove' => [
+            'annotations' => [
+                'inheritdoc',
+                'throws',
+            ],
+        ],
+        'method_argument_space' => [
+            // Если аргумены перечислены более чем в одну строку, то проверяет, что каждый аргумент находится на своей строке
+            'ensure_fully_multiline' => true,
+            // После запятой, будет ровно 1 пробел
+            'keep_multiple_spaces_after_comma' => false,
+        ],
+    ])
+    ->setFinder($finder)
+;

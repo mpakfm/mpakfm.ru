@@ -59,7 +59,6 @@ class RegistrationController extends BaseController
 
     /**
      * @Route("/login", name="login")
-     * @throws \Exception
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
@@ -80,11 +79,11 @@ class RegistrationController extends BaseController
         $form = $this->createForm(LoginType::class);
 
         return $this->baseRender('index/signin.html.twig', [
-            'h1' => 'Сергей Фомин',
-            'h2' => 'Web Developer',
+            'h1'            => 'Сергей Фомин',
+            'h2'            => 'Web Developer',
             'last_username' => $lastUsername,
-            'error' => $error,
-            'form' => $form->createView(),
+            'error'         => $error,
+            'form'          => $form->createView(),
         ]);
     }
 }

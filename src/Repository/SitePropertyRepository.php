@@ -7,8 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method SiteProperty|null find($id, $lockMode = null, $lockVersion = null)
- * @method SiteProperty|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|SiteProperty find($id, $lockMode = null, $lockVersion = null)
+ * @method null|SiteProperty findOneBy(array $criteria, array $orderBy = null)
  * @method SiteProperty[]    findAll()
  * @method SiteProperty[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -19,10 +19,6 @@ class SitePropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, SiteProperty::class);
     }
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function saveItem(SiteProperty $item)
     {
         $this->_em->persist($item);

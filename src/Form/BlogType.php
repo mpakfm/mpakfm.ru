@@ -24,44 +24,44 @@ class BlogType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => false,
-                'attr' => [
+                'attr'  => [
                     'placeholder' => 'Название',
                 ],
             ])
             ->add('short_text', TextareaType::class, [
                 'label' => false,
-                'attr' => [
+                'attr'  => [
                     'placeholder' => 'Превью',
                 ],
             ])
             ->add('full_text', TextareaType::class, [
-                'label' => false,
+                'label'    => false,
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'placeholder' => 'Полный текст',
-                    'class' => 'textarea-big-size',
+                    'class'       => 'textarea-big-size',
                 ],
             ])
-            ->add('hidden', CheckboxType::class,[
-                'label' => 'Невидимое сообщение',
+            ->add('hidden', CheckboxType::class, [
+                'label'    => 'Невидимое сообщение',
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'class' => '',
                 ],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',
-                'attr' => [
+                'attr'  => [
                     'value' => 'Валуе',
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Blog::class,
-        ));
+        ]);
     }
-
 }
