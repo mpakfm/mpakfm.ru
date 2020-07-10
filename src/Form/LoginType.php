@@ -23,21 +23,22 @@ class LoginType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'label' => false,
-                'attr' => [
+                'attr'  => [
                     'placeholder' => 'Login',
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'label' => false,
-                'attr' => [
+                'attr'  => [
                     'placeholder' => 'Password',
                 ],
             ])
             ->add('remember_me', CheckboxType::class, [
-                'mapped' => false,
+                'mapped'   => false,
                 'required' => false,
-                'value' => 1,
+                'value'    => 1,
             ])
-            ->add('login', SubmitType::class);
+            ->add('login', SubmitType::class)
+        ;
     }
 }

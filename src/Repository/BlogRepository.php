@@ -7,8 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Blog|null find($id, $lockMode = null, $lockVersion = null)
- * @method Blog|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Blog find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Blog findOneBy(array $criteria, array $orderBy = null)
  * @method Blog[]    findAll()
  * @method Blog[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -24,10 +24,6 @@ class BlogRepository extends ServiceEntityRepository
         return $this->count([]);
     }
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function saveItem(Blog $item)
     {
         $this->_em->persist($item);

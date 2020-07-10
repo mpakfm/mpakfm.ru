@@ -33,7 +33,7 @@ class PaymentController extends BaseController
         } catch (\Throwable $exception) {
             $payment->setResult(0);
             $payment->setError($exception->getMessage());
-            Printu::obj($exception->getMessage())->dt()->title('Payment::result exception in file '.$exception->getFile().' in line '.$exception->getLine())->response('file')->file('error')->show();
+            Printu::obj($exception->getMessage())->dt()->title('Payment::result exception in file ' . $exception->getFile() . ' in line ' . $exception->getLine())->response('file')->file('error')->show();
         }
         $payment->setPaymented(new \DateTimeImmutable());
 
@@ -51,7 +51,7 @@ class PaymentController extends BaseController
     {
         $this->preLoad($request);
         $entityManager = $this->getDoctrine()->getManager();
-        $postFields = $robokassa->makePayment($request, $entityManager);
+        $postFields    = $robokassa->makePayment($request, $entityManager);
 
         return $this->json($postFields);
     }
@@ -62,7 +62,7 @@ class PaymentController extends BaseController
     public function paymentStatus(string $status, Request $request, PaymentRepository $repository, Robokassa $robokassa)
     {
         $this->preLoad($request);
-        $dt = new \DateTimeImmutable();
+        $dt    = new \DateTimeImmutable();
         $invId = null;
         if ($request->query->get('InvId')) {
             $invId = (int) $request->query->get('InvId');
@@ -86,11 +86,11 @@ class PaymentController extends BaseController
         try {
             $robokassa->verify($request, 1);
             $paymentData = [
-                'id' => $payment->getId(),
-                'email' => $payment->getEmail(),
-                'money' => $payment->getMoney(),
+                'id'          => $payment->getId(),
+                'email'       => $payment->getEmail(),
+                'money'       => $payment->getMoney(),
                 'description' => $payment->getDescription(),
-                'created' => $payment->getCreated(),
+                'created'     => $payment->getCreated(),
             ];
         } catch (\Throwable $exception) {
             Printu::obj($exception->getMessage())->dt()->title('PaymentController::paymentStatus verify exception')->response('file')->file('error')->show();
@@ -103,9 +103,9 @@ class PaymentController extends BaseController
             $entityManager->flush();
         }
 
-        return $this->baseRender('payment/'.$status.'.html.twig', [
-            'h1' => 'Сергей Фомин',
-            'h2' => 'Web Developer / Оплата',
+        return $this->baseRender('payment/' . $status . '.html.twig', [
+            'h1'      => 'Сергей Фомин',
+            'h2'      => 'Web Developer / Оплата',
             'request' => [
                 'status' => $status,
             ],
@@ -121,11 +121,11 @@ class PaymentController extends BaseController
         $this->preLoad($request);
 
         return $this->baseRender('payment/index.html.twig', [
-            'h1' => 'Сергей Фомин',
-            'h2' => 'Web Developer / Оплата',
-            'rate' => '1200',
+            'h1'        => 'Сергей Фомин',
+            'h2'        => 'Web Developer / Оплата',
+            'rate'      => '1200',
             'robokassa' => [
-                'url' => $robokassa::$url,
+                'url'  => $robokassa::$url,
                 'test' => $robokassa::IS_TEST,
             ],
         ]);

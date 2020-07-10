@@ -4,7 +4,7 @@
  * Created by PhpStorm.
  * User: mpak
  * Date: 25.06.2020
- * Time: 23:50
+ * Time: 23:50.
  */
 
 namespace App\Controller\Admin;

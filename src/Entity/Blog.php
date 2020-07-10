@@ -160,6 +160,7 @@ class Blog
             $text = preg_replace('/[\r\n]{2,}/Uism', "\n<p>", $text);
             $text = str_replace(['<br>', '<br/>'], '<p>', $text);
         }
+
         return $text;
     }
 

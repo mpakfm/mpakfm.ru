@@ -21,8 +21,9 @@ class PropertyController extends AbstractController
     public function index(SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer)
     {
         $siteProp = $basePropertizer->setMetaProperties($sitePropertyRepository);
+
         return $this->render('admin/index/property.html.twig', [
-            'h1' => 'Сергей Фомин',
+            'h1'       => 'Сергей Фомин',
             'siteProp' => $siteProp,
         ]);
     }

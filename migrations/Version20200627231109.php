@@ -12,18 +12,18 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200627231109 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE payment (id INT AUTO_INCREMENT NOT NULL, merchant VARCHAR(255) NOT NULL, money NUMERIC(10, 2) NOT NULL, email VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, created DATETIME NOT NULL, result SMALLINT DEFAULT NULL, is_test TINYINT(1) NOT NULL, error LONGTEXT DEFAULT NULL, paymented DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE payment');

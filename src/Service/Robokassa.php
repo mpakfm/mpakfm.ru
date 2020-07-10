@@ -14,18 +14,18 @@ use Symfony\Component\HttpFoundation\Request;
 class Robokassa
 {
     const IS_TEST = false;
-    const ALGO = 'sha256';
+    const ALGO    = 'sha256';
 
     public static $url = 'https://auth.robokassa.ru/Merchant/Index.aspx';
 
     private $merchantLogin = 'mpakfm.ru';
-    private $pass1 = 'KtyPhp9J904pvt7FAzxb';
-    private $pass2 = 'XnjLYbvA6J7iVJ87ge4P';
-    private $testPass1 = 'bQ3GT01qRsVka30WKnrG';
-    private $testPass2 = 'uv5qN8Tm9w4Vai9HTcrW';
-    private $culture = 'ru';
-    private $encoding = 'utf-8';
-    private $incCurrLabel = 'BANKOCEAN2R';
+    private $pass1         = 'KtyPhp9J904pvt7FAzxb';
+    private $pass2         = 'XnjLYbvA6J7iVJ87ge4P';
+    private $testPass1     = 'bQ3GT01qRsVka30WKnrG';
+    private $testPass2     = 'uv5qN8Tm9w4Vai9HTcrW';
+    private $culture       = 'ru';
+    private $encoding      = 'utf-8';
+    private $incCurrLabel  = 'BANKOCEAN2R';
 
     public function getPasswordOne($isTest = false)
     {
@@ -47,20 +47,21 @@ class Robokassa
 
     public function verify(Request $request, int $passType = 1): bool
     {
-        $password = ($passType == 1 ? $this->getPasswordOne(static::IS_TEST) : $this->getPasswordTwo(static::IS_TEST) );
+        $password = (1 == $passType ? $this->getPasswordOne(static::IS_TEST) : $this->getPasswordTwo(static::IS_TEST));
         if ($request->query->get('SignatureValue')) {
-            $str = $request->query->get('OutSum').":{$request->query->get('InvId')}:".$password;
+            $str  = $request->query->get('OutSum') . ":{$request->query->get('InvId')}:" . $password;
             $hash = $request->query->get('SignatureValue');
         } elseif ($request->request->get('SignatureValue')) {
-            $str = $request->request->get('OutSum').":{$request->request->get('InvId')}:".$password;
+            $str  = $request->request->get('OutSum') . ":{$request->request->get('InvId')}:" . $password;
             $hash = $request->request->get('SignatureValue');
         }
-        $crc = hash(static::ALGO, $str);
-        $crc = strtoupper($crc);
+        $crc  = hash(static::ALGO, $str);
+        $crc  = strtoupper($crc);
         $hash = strtoupper($hash);
         if ($hash != $crc) {
             throw new \Exception('Wrong hash');
         }
+
         return true;
     }
 
@@ -69,13 +70,14 @@ class Robokassa
         if ('' == $payment->getEmail() || 0 == $payment->getMoney()) {
             throw new \Exception('Wrong parametrs');
         }
+
         return true;
     }
 
     public function makePayment(Request $request, $entityManager)
     {
-        $money = round(floatval(str_replace(',', '.', $request->request->get('money'))), 2);
-        $email = trim($request->request->get('email'));
+        $money   = round(floatval(str_replace(',', '.', $request->request->get('money'))), 2);
+        $email   = trim($request->request->get('email'));
         $payment = new Payment();
         $payment->setMerchant($this->merchantLogin);
         $payment->setEmail($email);
@@ -96,19 +98,19 @@ class Robokassa
         $entityManager->persist($payment);
         $entityManager->flush();
 
-        $str = "{$this->merchantLogin}:".$money.":{$payment->getId()}:".$this->getPasswordOne(static::IS_TEST);
+        $str = "{$this->merchantLogin}:" . $money . ":{$payment->getId()}:" . $this->getPasswordOne(static::IS_TEST);
         $crc = hash(static::ALGO, $str);
 
         $postData = [
-            'MerchantLogin' => $payment->getMerchant(),
-            'OutSum' => $payment->getMoney(),
-            'InvId' => $payment->getId(),
-            'Description' => $payment->getDescription(),
+            'MerchantLogin'  => $payment->getMerchant(),
+            'OutSum'         => $payment->getMoney(),
+            'InvId'          => $payment->getId(),
+            'Description'    => $payment->getDescription(),
             'SignatureValue' => $crc,
-            'IncCurrLabel' => $this->incCurrLabel,
-            'Culture' => $this->culture,
-            'Email' => $payment->getEmail(),
-            'Encoding' => $this->encoding,
+            'IncCurrLabel'   => $this->incCurrLabel,
+            'Culture'        => $this->culture,
+            'Email'          => $payment->getEmail(),
+            'Encoding'       => $this->encoding,
         ];
 
         return $postData;

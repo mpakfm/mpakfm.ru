@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: mpak
  * Date: 04.07.2020
- * Time: 21:41
+ * Time: 21:41.
  */
 
 namespace App\Service;
