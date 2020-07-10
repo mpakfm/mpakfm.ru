@@ -26,7 +26,7 @@ class RegistrationController extends BaseController
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         throw new HttpException(404, 'Page not found');
-        $this->preLoad();
+        $this->preLoad($request);
         // 1) постройте форму
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -63,7 +63,7 @@ class RegistrationController extends BaseController
      */
     public function login(Request $request, AuthenticationUtils $authUtils)
     {
-        $this->preLoad();
+        $this->preLoad($request);
         if ($this->getUser()) {
             return $this->redirectToRoute('index');
         }
