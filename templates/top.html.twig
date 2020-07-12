@@ -24,7 +24,7 @@
                 {% if bloglist %}
                 <li class="list-inline-item last-item"><a href="/blog" title="Блог"><i class="fas fa-blog"></i></a></li>
                 {% endif %}
-                {% if user %}
+                {% if user and user.isAdmin() %}
                 <li class="list-inline-item last-item"><a href="/blog/create" title="Новый пост"><i class="far fa-comment-alt"></i></a></li>
                 {% endif %}
                 <li class="list-inline-item last-item"><a href="/payment" title="Оплатить работу"><i class="fas fa-credit-card"></i></a></li>

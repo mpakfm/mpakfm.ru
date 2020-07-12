@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Entity\SiteProperty;
 use App\Service\BasePropertizer;
+use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
