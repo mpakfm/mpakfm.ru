@@ -30,6 +30,20 @@ class IndexControllerTest extends WebTestCase
     }
 
     /**
+     * @covers IndexController::personalAgreement
+     */
+    public function testAgreement()
+    {
+        $client  = static::createClient();
+        $crawler = $client->request('GET', '/personal-agreement');
+        assertSame(200, $client->getResponse()->getStatusCode(), 'Ошибка StatusCode');
+        assertSame('Сергей Фомин', $crawler->filter('h1')->text(), 'Ошибка значения h1');
+        assertSame('Web Developer', $crawler->filter('h2.desc')->text(), 'Ошибка значения h2.desc');
+        assertSame('Согласие пользователя сайта на обработку персональных данных', $crawler->filter('h2.heading')->text(), 'Ошибка значения h2.heading');
+        assertSame('Политика конфиденциальности', $crawler->filter('h5')->text(), 'Ошибка значения h5');
+    }
+
+    /**
      * @covers IndexController::portfolio
      */
     public function testPortfolio()
