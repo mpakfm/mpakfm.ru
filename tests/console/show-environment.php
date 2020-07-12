@@ -3,7 +3,6 @@
 
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 
@@ -13,22 +12,13 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
 
 set_time_limit(0);
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+include_once dirname(__DIR__) . '/../vendor/autoload.php';
 
 if (!class_exists(Application::class) || !class_exists(Dotenv::class)) {
     throw new LogicException('You need to add "symfony/framework-bundle" and "symfony/dotenv" as Composer dependencies.');
 }
 
-$input = new ArgvInput();
-if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
-    putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
-}
-
-if ($input->hasParameterOption('--no-debug', true)) {
-    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
-}
-
-(new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
+(new Dotenv())->bootEnv(dirname(__DIR__) . '/../.env.test');
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
@@ -38,6 +28,6 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
-$kernel      = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-$application = new Application($kernel);
-$application->run($input);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+
+echo $_SERVER['APP_ENV'];
