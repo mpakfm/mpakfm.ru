@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ status_code }} {{ status_text }}{% endblock %}
+
+{% block body %}
+
+    <!-- ******HEADER****** -->
+    <header class="header">
+        <div class="container clearfix">
+            <a href="/" title="На главную" alt="На главную">
+                <img class="profile-image img-fluid float-left rounded-circle" src="build/images/persona-blue.png" alt="profile image" />
+            </a>
+            <div class="profile-content float-left">
+                <h1 class="name">{{ status_code }} {{ status_text }}</h1>
+                <h2 class="desc">Сервис временно недоступен</h2>
+            </div>
+        </div>
+    </header>
+
+    <div class="container sections-wrapper">
+        <div class="row">
+            <div class="primary col-lg-8 col-12">
+                <section class="about section">
+                    <div class="section-inner shadow-sm rounded">
+                        <!--<h2 class="heading">Немного обо мне</h2>-->
+                        <div class="content">
+                            <p>{{ error_text }}</p>
+                            <p>Если вы уверены что должны увидеть какой-то контент а вместо этого видите страницу об ошибке, не сочтите за труд, отправьте скриншот с адресом страницы мне в телеграм.</p>
+                            <p><a class="btn btn-cta-primary float-right" href="https://telegram.im/@mpakfm" target="_blank"><i class="fas fa-paper-plane"></i> Telegram Me</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

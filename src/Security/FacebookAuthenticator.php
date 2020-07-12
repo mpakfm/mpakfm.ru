@@ -13,8 +13,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use Mpakfm\Printu;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -35,12 +37,16 @@ class FacebookAuthenticator extends SocialAuthenticator
 
     public function supports(Request $request)
     {
+        Printu::obj($request->query->all())->title('FacebookAuthenticator::supports query');
+        Printu::obj($request->request->all())->title('FacebookAuthenticator::supports request');
         // continue ONLY if the current ROUTE matches the check ROUTE
         return $request->attributes->get('_route') === 'connect_facebook_check';
     }
 
     public function getCredentials(Request $request)
     {
+        Printu::obj($request->query->all())->title('FacebookAuthenticator::getCredentials query');
+        Printu::obj($request->request->all())->title('FacebookAuthenticator::getCredentials request');
         // this method is only called if supports() returns true
 
         // For Symfony lower than 3.4 the supports method need to be called manually here:
@@ -53,6 +59,7 @@ class FacebookAuthenticator extends SocialAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+        Printu::obj($credentials)->title('FacebookAuthenticator::getUser $credentials');
         /** @var FacebookUser $facebookUser */
         $facebookUser = $this->getFacebookClient()
             ->fetchUserFromToken($credentials)
@@ -84,6 +91,11 @@ class FacebookAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        Printu::obj($request->query->all())->title('onAuthenticationSuccess query');
+        Printu::obj($token->getUsername())->title('onAuthenticationSuccess $token->getUsername');
+        Printu::obj($token->getCredentials())->title('onAuthenticationSuccess $token->getCredentials');
+        Printu::obj($token->getRoleNames())->title('onAuthenticationSuccess $token->getRoleNames');
+        Printu::obj($token->getUser())->title('onAuthenticationSuccess $token->getUser');
         $targetUrl = $this->router->generate('index');
 
         return new RedirectResponse($targetUrl);
@@ -93,9 +105,15 @@ class FacebookAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+        Printu::obj($request->query->all())->title('onAuthenticationFailure query');
+        if ($request->query->get('error_message')) {
+            $msg = $request->query->get('error_code') . '. ' . $request->query->get('error_message');
+        } else {
+            $msg = strtr($exception->getMessageKey(), $exception->getMessageData());
+        }
 
-        return new Response($message, Response::HTTP_FORBIDDEN);
+        throw new ServiceUnavailableHttpException(30, $msg, null, $request->query->get('error_code'));
+        //return new Response($message, Response::HTTP_FORBIDDEN);
     }
 
     /**
@@ -104,6 +122,9 @@ class FacebookAuthenticator extends SocialAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
+        Printu::obj($request->query->all())->title('FacebookAuthenticator::start query');
+        Printu::obj($request->request->all())->title('FacebookAuthenticator::start request');
+
         return new RedirectResponse(
             '/connect/', // might be the site, where users choose their oauth provider
             Response::HTTP_TEMPORARY_REDIRECT
