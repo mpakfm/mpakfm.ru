@@ -21,6 +21,19 @@ class IndexController extends BaseController
     }
 
     /**
+     * @Route("/personal-agreement", name="personal agreement")
+     */
+    public function personalAgreement(Request $request)
+    {
+        $this->preLoad($request);
+
+        return $this->baseRender('index/agreement.html.twig', [
+            'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer',
+        ]);
+    }
+
+    /**
      * @Route("/contact", name="contact")
      */
     public function contact()
