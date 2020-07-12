@@ -4,10 +4,15 @@ security:
         App\Entity\User:
             algorithm: bcrypt
     providers:
+        chain_provider:
+            chain:
+                providers: [our_db_provider, oauth]
         our_db_provider:
             entity:
                 class: App\Entity\User
                 property: username
+        oauth:
+            id: knpu.oauth2.user_provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -28,6 +33,9 @@ security:
                 lifetime: 604800 # 1 week in seconds
                 path:     /
                 always_remember_me: true
+            guard:
+                authenticators:
+                    - App\Security\FacebookAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -38,7 +46,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
     #role_hierarchy:

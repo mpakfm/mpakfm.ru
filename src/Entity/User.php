@@ -47,6 +47,11 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(name="facebook_id", type="string", length=255)
+     */
+    private $facebookId;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -57,9 +62,13 @@ class User implements UserInterface, \Serializable
         return null;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        if ($this->facebookId) {
+            return ['ROLE_USER'];
+        }
+
+        return ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     public function getId(): ?int
@@ -149,5 +158,21 @@ class User implements UserInterface, \Serializable
         $this->isActive = $isActive;
 
         return $this;
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebookId;
+    }
+
+    public function setFacebookId(string $facebookId)
+    {
+        $this->facebookId = $facebookId;
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
     }
 }
