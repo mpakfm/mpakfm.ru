@@ -115,11 +115,11 @@ class PhpCsFixerFilesAnalyzer
             $diffLine = new DiffLine($line);
 
             if (!$diffLine->isInsert()) {
-                ++$oldLineNumber;
+                $oldLineNumber++;
             }
 
             if (!$diffLine->isDelete()) {
-                ++$newLineNumber;
+                $newLineNumber++;
             }
 
             $diffLine->oldLineNumber = (!$diffLine->isInsert()) ? $oldLineNumber : null;

@@ -1,0 +1,2 @@
+INSERT INTO `site_property` (`id`, `name`, `meta_title`, `meta_description`, `meta_keywords`, `footer_copyright`, `footer_author`, `last_update`) VALUES
+(1, 'Сергей Фомин aka mpakfm', 'Сергей Фомин aka mpakfm', 'Сергей Фомин aka mpakfm php программист сайт-резюме - mpakfm.ru', 'Сергей Фомин, mpakfm, mpakfm.ru, php, programmer, программист, резюме', 'Designed with <i class=\"fas fa-heart\"></i> by <a href=\"https://themes.3rdwavemedia.com\" target=\"_blank\">Xiaoying Riley</a> for developers', NULL, '2020-06-27 15:24:00');

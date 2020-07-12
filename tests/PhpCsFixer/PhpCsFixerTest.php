@@ -12,14 +12,14 @@ use App\Service\PhpCsFixer\PhpCsFixerFilesAnalyzer;
 use App\Service\PhpCsFixer\RuleSetDefinition;
 use App\Service\ProcessExecutor\ExecutionResult;
 use App\Service\ProcessExecutor\ProcessExecutor;
+use App\Tests\TestCaseAbstract;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  * @coversNothing
  */
-class PhpCsFixerTest extends TestCase
+class PhpCsFixerTest extends TestCaseAbstract
 {
     /**
      * @var ProcessExecutor
@@ -66,7 +66,6 @@ class PhpCsFixerTest extends TestCase
     private function getChangedFiles()
     {
         // Поиск ближайшего общего предка между текущим коммитом и origin/master
-        $executionResult = exec('git merge-base origin/master HEAD');
         $executionResult = $this->process->exec(
             'git merge-base origin/master HEAD'
         );
@@ -94,15 +93,12 @@ class PhpCsFixerTest extends TestCase
      */
     private function getPhpCsFixerCommandResultMessage(ExecutionResult $consoleCommand, $configFilename)
     {
-        //var_dump($output);
-        //var_dump($exitCode);
-        //return "";
         $exitCode = $consoleCommand->getExitCode();
         $stdErr   = $consoleCommand->getErrorOutput();
         $messages = [];
 
         // @see https://github.com/FriendsOfPHP/PHP-CS-Fixer#exit-codes
-        if (1 === $exitCode) {
+        if ($exitCode === 1) {
             return "General error (or PHP minimal requirement not matched).\n{$stdErr}\n";
         }
 
@@ -150,13 +146,13 @@ class PhpCsFixerTest extends TestCase
         // Переформатируем строки с файлами.
         //
         // Было:
-        // 1) /home/bitrix/www/path/to/file.php (indentation_type, array_syntax)
+        // 1) /path/to/file.php (indentation_type, array_syntax)
         //
         // Стало:
         // 1) Code must use configured indentation type (4 spaces):
-        //  /home/bitrix/www/path/to/file.php:74
+        //  /path/to/file.php:74
         // 2) PHP arrays should be declared using short syntax:
-        //  /home/bitrix/www/path/to/file.php:95
+        //  /path/to/file.php:95
 
         $i = 1;
         foreach ($standardOutputLines as $line) {
@@ -190,7 +186,7 @@ class PhpCsFixerTest extends TestCase
                     $result .= "\n";
                     $result .= PhpCsFixerFilesAnalyzer::convertDiffToString($diffGroups);
 
-                    ++$i;
+                    $i++;
                 }
             } else {
                 $result .= "{$line}\n";

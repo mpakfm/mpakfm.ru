@@ -12,25 +12,32 @@ use App\Repository\SitePropertyRepository;
 use App\Service\BasePropertizer;
 use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Twig\Error\LoaderError;
 
 class ErrorsController extends AbstractController
 {
-    public function show(\Throwable $exception, SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer)
+    /**
+     * @var string
+     */
+    public $canonical;
+
+    public function show(\Throwable $exception, SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer, Request $request)
     {
         if ('Access Denied.' == $exception->getMessage()) {
             $exception = new HttpException(403, 'Access Denied');
         }
-        $className = get_class($exception);
+        $this->canonical        = ($request->server->get('REQUEST_SCHEME') == 'https' || $request->server->get('SERVER_PORT') != 80 ? 'https' : 'http') . '://' . $request->server->get('SERVER_NAME') . $request->server->get('REQUEST_URI');
+        $className              = get_class($exception);
         switch ($className) {
             case'Symfony\\Component\\HttpKernel\\Exception\\HttpException':
             case'Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException':
                 $statusCode = $exception->getStatusCode();
                 $headers    = $exception->getHeaders();
                 $errorText  = $exception->getMessage();
-                Printu::obj($exception->getMessage())->dt()->title(' UA: ' . $_SERVER['HTTP_USER_AGENT'] . '; IP: ' . $_SERVER['REMOTE_ADDR'])->response('file')->file('errors.404.log')->show();
+                Printu::obj($exception->getMessage())->dt()->title(' UA: ' . $request->server->get('HTTP_USER_AGENT') . '; IP: ' . $request->server->get('REMOTE_ADDR'))->response('file')->file('errors.404.log')->show();
 
                 break;
             default:
@@ -47,8 +54,9 @@ class ErrorsController extends AbstractController
                 'status_code' => $statusCode,
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text'  => $errorText,
+                'canonical'   => $this->canonical,
                 'siteProp'    => $siteProp,
-                'gtag'        => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'gtag'        => (isset($_ENV['APP_ENV']) && 'prod' == $_ENV['APP_ENV'] ? true : false),
                 'meta'        => [
                     'title'       => $siteProp->getMetaTitle(),
                     'description' => $siteProp->getMetaDescription(),
@@ -62,8 +70,9 @@ class ErrorsController extends AbstractController
                 'status_code' => $statusCode,
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text'  => $errorText,
+                'canonical'   => $this->canonical,
                 'siteProp'    => $siteProp,
-                'gtag'        => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'gtag'        => (isset($_ENV['APP_ENV']) && 'prod' == $_ENV['APP_ENV'] ? true : false),
                 'meta'        => [
                     'title'       => $siteProp->getMetaTitle(),
                     'description' => $siteProp->getMetaDescription(),
@@ -75,8 +84,9 @@ class ErrorsController extends AbstractController
                 'status_code' => $statusCode,
                 'status_text' => Response::$statusTexts[$statusCode],
                 'error_text'  => $errorText,
+                'canonical'   => $this->canonical,
                 'siteProp'    => $siteProp,
-                'gtag'        => ('prod' == $_ENV['APP_ENV'] ? true : false),
+                'gtag'        => (isset($_ENV['APP_ENV']) && 'prod' == $_ENV['APP_ENV'] ? true : false),
                 'meta'        => [
                     'title'       => $siteProp->getMetaTitle(),
                     'description' => $siteProp->getMetaDescription(),

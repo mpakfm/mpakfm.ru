@@ -17,13 +17,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseController extends AbstractController
 {
+    /**
+     * @var bool
+     */
     public $isCached  = true;
+
+    /**
+     * @var int
+     */
     public $cacheTime = 3600;
 
     /**
      * @var SiteProperty
      */
     public $siteProperties;
+
+    /**
+     * @var string
+     */
     public $canonical;
 
     public function __construct()
@@ -35,7 +46,7 @@ class BaseController extends AbstractController
         $sitePropertyRepository = $this->getDoctrine()->getRepository(SiteProperty::class);
         $basePropertizer        = new BasePropertizer();
         $this->siteProperties   = $basePropertizer->setMetaProperties($sitePropertyRepository);
-        $this->canonical        = $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . $request->server->get('REQUEST_URI');
+        $this->canonical        = ($request->server->get('REQUEST_SCHEME') == 'https' || $request->server->get('SERVER_PORT') != 80 ? 'https' : 'http') . '://' . $request->server->get('SERVER_NAME') . $request->server->get('REQUEST_URI');
     }
 
     public function baseRender(string $view, array $parameters = [], Response $response = null, $last_modified = null): Response
@@ -44,7 +55,7 @@ class BaseController extends AbstractController
         $blogListCount           = $blogRepository->getCount();
         $parameters['canonical'] = $this->canonical;
         $parameters['siteProp']  = $this->siteProperties;
-        $parameters['gtag']      = ('prod' == $_ENV['APP_ENV'] ? true : false);
+        $parameters['gtag']      = ('prod' == getenv('APP_ENV') ? true : false);
         $parameters['user']      = $this->getUser();
         $parameters['bloglist']  = $blogListCount;
         if (isset($parameters['meta'])) {
