@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Mpakfm\Printu;
@@ -23,11 +24,13 @@ class FacebookController extends BaseController
      */
     public function connectAction(ClientRegistry $clientRegistry)
     {
+        Printu::obj(getenv('OAUTH_FACEBOOK_ID'))->title('getenv OAUTH_FACEBOOK_ID');
+        Printu::obj($_ENV['OAUTH_FACEBOOK_ID'])->title('$_ENV OAUTH_FACEBOOK_ID');
         // will redirect to Facebook!
         return $clientRegistry
             ->getClient('facebook_main') // key used in config/packages/knpu_oauth2_client.yaml
             ->redirect([
-                'public_profile', 'email', // the scopes you want to access
+                'email', // the scopes you want to access
             ])
             ;
     }
@@ -45,6 +48,9 @@ class FacebookController extends BaseController
         // leave this method blank and create a Guard authenticator
         // (read below)
 
+        Printu::obj($request->request->all())->title('FacebookController::connectCheckAction request');
+        Printu::obj($request->query->all())->title('FacebookController::connectCheckAction query');
+
         /** @var \KnpU\OAuth2ClientBundle\Client\Provider\FacebookClient $client */
         $client = $clientRegistry->getClient('facebook_main');
 
@@ -56,13 +62,19 @@ class FacebookController extends BaseController
             // do something with all this new power!
             // e.g. $name = $user->getFirstName();
             Printu::obj($user)->title('FacebookController::connectCheckAction $user');
-            die;
+            return $this->redirectToRoute('index');
             // ...
         } catch (IdentityProviderException $e) {
             // something went wrong!
             // probably you should return the reason to the user
             Printu::obj($e->getMessage())->title('FacebookController::connectCheckAction $e->getMessage()');
-            die;
+
+            throw new Exception($e->getMessage());
         }
+
+        return $this->baseRender('index/index.html.twig', [
+            'h1' => 'Сергей Фомин',
+            'h2' => 'Web Developer',
+        ]);
     }
 }
