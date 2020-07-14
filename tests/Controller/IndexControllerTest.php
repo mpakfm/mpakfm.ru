@@ -9,13 +9,13 @@
 namespace App\Tests\Controller;
 
 use App\Controller\IndexController;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\TestCaseAbstract;
 
 /**
  * @internal
  * @covers IndexController
  */
-class IndexControllerTest extends WebTestCase
+class IndexControllerTest extends TestCaseAbstract
 {
     /**
      * @covers IndexController::index

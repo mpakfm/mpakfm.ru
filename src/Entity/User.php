@@ -168,6 +168,7 @@ class User implements UserInterface, \Serializable
     public function setFacebookId(string $facebookId)
     {
         $this->facebookId = $facebookId;
+
         return $this;
     }
 

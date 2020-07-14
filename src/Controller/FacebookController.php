@@ -62,6 +62,7 @@ class FacebookController extends BaseController
             // do something with all this new power!
             // e.g. $name = $user->getFirstName();
             Printu::obj($user)->title('FacebookController::connectCheckAction $user');
+
             return $this->redirectToRoute('index');
             // ...
         } catch (IdentityProviderException $e) {
