@@ -39,6 +39,7 @@ class ErrorsController extends AbstractController
                 $headers    = $exception->getHeaders();
                 $errorText  = $exception->getMessage();
                 Printu::obj($exception->getMessage())->dt()->title(' UA: ' . $request->server->get('HTTP_USER_AGENT') . '; IP: ' . $request->server->get('REMOTE_ADDR'))->response('file')->file('errors.404.log')->show();
+
                 break;
             default:
                 $statusCode = '500';

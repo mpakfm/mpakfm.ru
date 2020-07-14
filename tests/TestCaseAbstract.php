@@ -24,16 +24,16 @@ abstract class TestCaseAbstract extends KernelTestCase
 
     public static $execCounter = 0;
 
+    /**
+     * @var EntityManager
+     */
+    protected $em;
+
     /** @var DatabaseReloader */
     private static $databaseReloader;
 
     /** @var AbstractBrowser */
     private static $clientBrowser;
-
-    /**
-     * @var EntityManager
-     */
-    private $em;
 
     protected function setUp(): void
     {
