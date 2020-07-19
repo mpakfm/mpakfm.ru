@@ -17,13 +17,13 @@
 
                             {{ form_row(form.name) }}
                             {{ form_row(form.hidden) }}
-                            {#{{ form_row(form.short_text) }}#}
+
                             <div class="form-group">
-                                <textarea id="blog_short_text" name="blog[short_text]" placeholder="Превью" class="textarea-middle-size form-control blog_text"></textarea>
+                                <textarea id="blog_short_text" name="blog[short_text]" placeholder="Превью" class="textarea-middle-size form-control blog_text">{{ element.getShortText() | raw }}</textarea>
 
                             </div>
                             <div class="form-group">
-                                <textarea id="blog_full_text" name="blog[full_text]" placeholder="Полный текст" class="textarea-big-size form-control blog_text"></textarea>
+                                <textarea id="blog_full_text" name="blog[full_text]" placeholder="Полный текст" class="textarea-big-size form-control blog_text">{{ element.getFullText() | raw }}</textarea>
 
                             </div>
                             {{ form_row(form.save) }}

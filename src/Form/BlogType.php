@@ -58,6 +58,11 @@ class BlogType extends AbstractType
         ;
     }
 
+    public function tmp()
+    {
+        //$this->
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

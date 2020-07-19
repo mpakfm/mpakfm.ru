@@ -64,8 +64,8 @@ class ErrorsControllerTest extends TestCaseAbstract
         $exception = new AccessDeniedHttpException('Test access denied exception');
         $result    = $controller->show($exception, $repo, $base, $request);
         $crawler   = new Crawler($result->getContent());
-        assertSame(500, $result->getStatusCode(), 'Неверный ответ сервера на запрос AccessDeniedHttpException');
-        assertSame('500 Internal Server Error', $crawler->filter('h1.name')->text(), 'Неверный заголовок H1');
+        assertSame(403, $result->getStatusCode(), 'Неверный ответ сервера на запрос AccessDeniedHttpException');
+        assertSame('403 Forbidden', $crawler->filter('h1.name')->text(), 'Неверный заголовок H1');
         assertNotEmpty($crawler->filter('.copyright')->text(), 'Не найден блок copyright');
     }
 

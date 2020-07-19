@@ -12,10 +12,17 @@
                 <section class="latest section">
                     <div class="section-inner shadow-sm rounded">
                         <h2 class="heading">{{ element.name }}</h2>
-                        <div class="content-datetime">{{ element.getCreatedRussian('d f H:i') }}</div>
+                        <div class="content-datetime">{% if element.getUpdated() %}{{ element.getUpdatedRussian('d f H:i') }}{% else %}{{ element.getCreatedRussian('d f H:i') }}{% endif %}</div>
                         <div class="content">
                             {{ element.getShortText()|raw }}
                             {{ element.getFullText()|raw }}
+                            {% if access_edit %}
+                                <div class="post-action">
+                                    <button class="js-post-edit btn btn-sm btn-info" data-id="{{ element.id }}">редактировать</button>
+                                    <button class="js-post-delete btn btn-sm btn-danger" data-id="{{ element.id }}">удалить</button>
+                                    <button class="js-post-hidden btn btn-sm {% if element.getHidden() %}btn-info{% else %}btn-secondary{% endif %}" data-id="{{ element.id }}">{% if element.getHidden() %}показать{% else %}спрятать{% endif %}</button>
+                                </div>
+                            {% endif %}
                         </div><!--//content-->
                     </div><!--//section-inner-->
                 </section>

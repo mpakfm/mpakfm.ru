@@ -11,16 +11,21 @@
                 <section data-post="{{ item.id }}" class="latest section {% if item.getHidden() %}post-hidden{% endif %}">
                     <div class="section-inner shadow-sm rounded">
                         <h2 class="heading"><a href="/blog/{{ item.code }}">{{ item.name }}</a></h2>
-                        <div class="content-datetime">{{ item.getCreatedRussian('d f H:i') }}</div>
+                        <div class="content-datetime">{% if item.getUpdated() %}{{ item.getUpdatedRussian('d f H:i') }}{% else %}{{ item.getCreatedRussian('d f H:i') }}{% endif %}</div>
                         <div class="content">
                             {{ item.getShortText()|raw }}
                             {% if item.getFullText() != '' %}
                                 <div class="post-more">
                                     <a href="/blog/{{ item.code }}">далее</a>
                                 </div>
+                            {% else %}
+                                <div class="post-more">
+                                    <a href="/blog/{{ item.code }}">ссылка на запись</a>
+                                </div>
                             {% endif %}
                             {% if access_edit %}
                                 <div class="post-action">
+                                    <button class="js-post-edit btn btn-sm btn-info" data-id="{{ item.id }}">редактировать</button>
                                     <button class="js-post-delete btn btn-sm btn-danger" data-id="{{ item.id }}">удалить</button>
                                     <button class="js-post-hidden btn btn-sm {% if item.getHidden() %}btn-info{% else %}btn-secondary{% endif %}" data-id="{{ item.id }}">{% if item.getHidden() %}показать{% else %}спрятать{% endif %}</button>
                                 </div>

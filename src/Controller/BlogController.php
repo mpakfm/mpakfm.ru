@@ -6,8 +6,11 @@ use App\Entity\Blog;
 use App\Form\BlogType;
 use App\Repository\BlogRepository;
 use App\Service\JsonDataResponse;
+use DateTimeImmutable;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -91,10 +94,46 @@ class BlogController extends BaseController
         $error = null;
 
         return $this->baseRender('blog/create.html.twig', [
-            'h1'    => 'Сергей Фомин',
-            'h2'    => 'Web Developer / Блог',
-            'error' => $error,
-            'form'  => $form->createView(),
+            'h1'      => 'Сергей Фомин',
+            'h2'      => 'Web Developer / Блог',
+            'error'   => $error,
+            'form'    => $form->createView(),
+            'element' => $blogPost,
+        ]);
+    }
+
+    /**
+     * @Route("/blog/edit/{id}", name="blog_edit")
+     */
+    public function edit(Request $request, int $id, BlogRepository $repository)
+    {
+        $this->preLoad($request);
+        $user = $this->getUser();
+        if (!$user || !$user->isAdmin()) {
+            throw new AccessDeniedHttpException();
+        }
+        $criteria = [
+            'id' => $id,
+        ];
+        $element = $repository->findOneBy($criteria, []);
+
+        $form = $this->createForm(BlogType::class, $element);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $element->setUpdated(new DateTimeImmutable());
+            $repository->saveItem($element);
+
+            return $this->redirect('/blog/' . $element->getCode());
+        }
+
+        $error = null;
+
+        return $this->baseRender('blog/create.html.twig', [
+            'h1'      => 'Сергей Фомин',
+            'h2'      => 'Web Developer / Блог',
+            'error'   => $error,
+            'form'    => $form->createView(),
+            'element' => $element,
         ]);
     }
 
@@ -114,15 +153,21 @@ class BlogController extends BaseController
             throw new NotFoundHttpException('Страница не найдена');
         }
 
+        $user = $this->getUser();
+
+        $lastModified = $elements[0]->getUpdated() ? $elements[0]->getUpdated() : $elements[0]->getCreated();
+        $response     = new Response();
+
         return $this->baseRender('blog/element.html.twig', [
-            'h1'      => 'Сергей Фомин',
-            'h2'      => 'Web Developer / Блог',
-            'element' => $elements[0],
-            'meta'    => [
+            'h1'          => 'Сергей Фомин',
+            'h2'          => 'Web Developer / Блог',
+            'element'     => $elements[0],
+            'access_edit' => ($user && $user->isAdmin() ? true : false),
+            'meta'        => [
                 'description' => $this->siteProperties->getMetaDescription() . ' / Блог, журнал программиста',
                 'keywords'    => $this->siteProperties->getMetaKeywords() . ', блог, журнал программиста',
             ],
-        ]);
+        ], $response, $lastModified);
     }
 
     /**
@@ -140,17 +185,20 @@ class BlogController extends BaseController
         $limit    = 20;
         $elements = $repository->findBy($criteria, $order, $limit, $offset);
 
+        $lastModified = $elements[0]->getUpdated() ? $elements[0]->getUpdated() : $elements[0]->getCreated();
+        $response     = new Response();
+
         return $this->baseRender('blog/index.html.twig', [
             'h1'          => 'Сергей Фомин',
             'h2'          => 'Web Developer / Блог',
             'elements'    => $elements,
-            'access_edit' => ($user && in_array('ROLE_USER', $user->getRoles()) ? true : false),
+            'access_edit' => ($user && $user->isAdmin() ? true : false),
             'meta'        => [
                 'title'       => $this->siteProperties->getMetaTitle() . ' / Блог',
                 'description' => $this->siteProperties->getMetaDescription() . ' / Блог, журнал программиста',
                 'keywords'    => $this->siteProperties->getMetaKeywords() . ', блог, журнал программиста',
             ],
-        ]);
+        ], $response, $lastModified);
     }
 
     private function hiddenAction(Blog $blog): array
