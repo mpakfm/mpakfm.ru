@@ -11,6 +11,7 @@ namespace App\Tests\Controller;
 use App\Controller\BlogController;
 use App\Entity\Blog;
 use App\Tests\TestCaseAbstract;
+use DateTime;
 
 /**
  * @internal
@@ -23,6 +24,15 @@ class BlogControllerTest extends TestCaseAbstract
      */
     public function testIndex()
     {
+        $repo = $this->em->getRepository(Blog::class);
+        $blog = new Blog();
+        $blog->setCreated(new DateTime());
+        $blog->setName('Test post');
+        $blog->setCode('test_post');
+        $blog->setShortText('Test post');
+        $blog->setHidden(false);
+        $repo->saveItem($blog);
+
         $client  = static::createClient();
         $crawler = $client->request('GET', '/blog');
         assertSame(200, $client->getResponse()->getStatusCode(), 'Ошибка StatusCode');
@@ -37,9 +47,11 @@ class BlogControllerTest extends TestCaseAbstract
     {
         $repo = $this->em->getRepository(Blog::class);
         $blog = new Blog();
+        $blog->setCreated(new DateTime());
         $blog->setName('Test post');
         $blog->setCode('test_post');
         $blog->setShortText('Test post');
+        $blog->setHidden(false);
         $repo->saveItem($blog);
 
         $client  = static::createClient();

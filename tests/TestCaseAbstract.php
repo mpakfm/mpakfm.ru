@@ -43,12 +43,10 @@ abstract class TestCaseAbstract extends KernelTestCase
         }
 
         try {
+            self::bootKernel();
+            $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
+
             if (!self::$execCounter) {
-                self::bootKernel();
-                $this->em = static::$kernel->
-                getContainer()->
-                get('doctrine')->
-                getManager();
                 $this->getDatabaseReloader($this->em)->cleanDatabase($this);
             }
         } catch (Throwable $exception) {

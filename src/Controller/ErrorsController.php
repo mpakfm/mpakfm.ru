@@ -26,6 +26,7 @@ class ErrorsController extends AbstractController
 
     public function show(\Throwable $exception, SitePropertyRepository $sitePropertyRepository, BasePropertizer $basePropertizer, Request $request)
     {
+        Printu::obj($exception->getMessage())->error('ErrorsController::show Exception in file ' . $exception->getFile() . ' in line ' . $exception->getLine());
         if ('Access Denied.' == $exception->getMessage()) {
             $exception = new HttpException(403, 'Access Denied');
         }
@@ -34,6 +35,7 @@ class ErrorsController extends AbstractController
         switch ($className) {
             case'Symfony\\Component\\HttpKernel\\Exception\\HttpException':
             case'Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException':
+            case'Symfony\\Component\\HttpKernel\\Exception\\AccessDeniedHttpException':
             case'Symfony\\Component\\HttpKernel\\Exception\\ServiceUnavailableHttpException':
                 $statusCode = $exception->getStatusCode();
                 $headers    = $exception->getHeaders();

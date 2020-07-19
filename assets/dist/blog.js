@@ -8,6 +8,16 @@ $(document).ready(function(){
         toolbar: 'casechange checklist code formatpainter pageembed',
         toolbar_mode: 'floating'
     });
+    var $shortTextValue = $('#blog_short_text').html();
+    //var $shortTextValue = $('#blog_short_text').html();
+    console.log('$shortTextValue: ');
+    console.log($shortTextValue);
+    console.log('blog_short_text:');
+    console.log(tinyMCE.get('blog_short_text'));
+    if (tinyMCE.get('blog_short_text') && typeof tinyMCE.get('blog_short_text') != 'undefined') {
+        tinyMCE.get('blog_short_text').setContent($shortTextValue);
+    }
+
     $('.js-post-hidden').click(function(){
         let data = {
             action: 'hidden',
@@ -37,6 +47,10 @@ $(document).ready(function(){
                 }
             }
         });
+    });
+    $('.js-post-edit').click(function(){
+        window.location.href = '/blog/edit/' + $(this).data('id');
+        return false;
     });
     $('.js-post-delete').click(function(){
         if (!confirm('Подтвердить. Удаление необратимо.')) {
