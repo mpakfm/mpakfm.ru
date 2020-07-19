@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BlogRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Mpakfm\RussianDateTime;
 
@@ -52,6 +53,19 @@ class Blog
      * @ORM\Column(type="boolean")
      */
     private $hidden;
+
+    /**
+     * Many Posts have Many Tags.
+     *
+     * @ORM\ManyToMany(targetEntity="Tags", inversedBy="posts")
+     * @ORM\JoinTable(name="posts_tags")
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,5 +185,16 @@ class Blog
         } else {
             $this->hidden = true;
         }
+    }
+
+    public function addTag(Tags $tag)
+    {
+        $tag->addPost($this); // synchronously updating inverse side
+        $this->tags[] = $tag;
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
     }
 }
