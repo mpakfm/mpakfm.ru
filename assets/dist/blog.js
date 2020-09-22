@@ -4,8 +4,9 @@ $(document).ready(function(){
         selector: 'textarea.blog_text',
         language:"ru",
         //theme : "advanced",
-        plugins: 'advcode casechange formatpainter autolink lists checklist media pageembed powerpaste',
-        toolbar: 'casechange checklist code formatpainter pageembed',
+        //plugins: 'advcode casechange formatpainter autolink lists checklist media pageembed powerpaste',
+        plugins: 'autolink lists media',
+        toolbar: 'code formatpainter',
         toolbar_mode: 'floating'
     });
     var $shortTextValue = $('#blog_short_text').html();
