@@ -56,7 +56,7 @@ class BaseController extends AbstractController
         $blogListCount           = $blogRepository->getCount();
         $parameters['canonical'] = $this->canonical;
         $parameters['siteProp']  = $this->siteProperties;
-        $parameters['gtag']      = ('prod' == getenv('APP_ENV') ? true : false);
+        $parameters['gtag']      = (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] == 'prod' ? true : false);
         $parameters['user']      = $this->getUser();
         $parameters['bloglist']  = $blogListCount;
         if (isset($parameters['meta'])) {
@@ -77,7 +77,7 @@ class BaseController extends AbstractController
             ];
         }
 
-        Printu::obj(getenv('APP_ENV'))->title('baseRender APP_ENV');
+        Printu::obj($_SERVER['APP_ENV'])->title('baseRender $_SERVER-APP_ENV');
         Printu::obj($parameters['gtag'])->title('baseRender gtag');
 
         if (null === $response) {
