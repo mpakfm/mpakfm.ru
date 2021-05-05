@@ -77,9 +77,6 @@ class BaseController extends AbstractController
             ];
         }
 
-        Printu::obj($_SERVER['APP_ENV'])->title('baseRender $_SERVER-APP_ENV');
-        Printu::obj($parameters['gtag'])->title('baseRender gtag');
-
         if (null === $response) {
             $response = new Response();
         }
