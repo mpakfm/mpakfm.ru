@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Blog;
 use App\Entity\SiteProperty;
 use App\Service\BasePropertizer;
+use Mpakfm\Printu;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +76,9 @@ class BaseController extends AbstractController
                 'keywords'    => $this->siteProperties->getMetaKeywords(),
             ];
         }
+
+        Printu::obj(getenv('APP_ENV'))->title('baseRender APP_ENV');
+        Printu::obj($parameters['gtag'])->title('baseRender gtag');
 
         if (null === $response) {
             $response = new Response();
