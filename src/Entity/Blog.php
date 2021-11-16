@@ -62,6 +62,11 @@ class Blog
      */
     private $tags;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $alias;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -196,5 +201,17 @@ class Blog
     public function getTags()
     {
         return $this->tags;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): self
+    {
+        $this->alias = $alias;
+
+        return $this;
     }
 }
