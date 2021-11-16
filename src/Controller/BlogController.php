@@ -150,7 +150,13 @@ class BlogController extends BaseController
         $elements = $repository->findBy($criteria, [], 1);
 
         if (!$elements) {
-            throw new NotFoundHttpException('Страница не найдена');
+            $criteria = [
+                'alias' => $post,
+            ];
+            $elements = $repository->findBy($criteria, [], 1);
+            if (!$elements) {
+                throw new NotFoundHttpException('Страница не найдена');
+            }
         }
 
         $user = $this->getUser();
