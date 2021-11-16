@@ -16,11 +16,11 @@
                             {{ item.getShortText()|raw }}
                             {% if item.getFullText() != '' %}
                                 <div class="post-more">
-                                    <a href="/blog/{{ item.code }}">далее</a>
+                                    <a href="/blog/{% if item.alias %}{{ item.alias }}{% else %}{{ item.code }}{% endif %}">далее</a>
                                 </div>
                             {% else %}
                                 <div class="post-more">
-                                    <a href="/blog/{{ item.code }}">ссылка на запись</a>
+                                    <a href="/blog/{% if item.alias %}{{ item.alias }}{% else %}{{ item.code }}{% endif %}">ссылка на запись</a>
                                 </div>
                             {% endif %}
                             {% if access_edit %}
