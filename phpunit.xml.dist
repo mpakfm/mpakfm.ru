@@ -11,6 +11,13 @@
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+
+        <!-- ###+ symfony/framework-bundle ### -->
+        <env name="APP_ENV" value="dev"/>
+        <env name="APP_SECRET" value="54f3d8049436e9509ac850b4d0549547"/>
+        <!-- env name="TRUSTED_PROXIES" value="127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16" -->
+        <!-- env name="TRUSTED_HOSTS" value="'^(localhost|example\.com)$'" -->
+        <!-- ###- symfony/framework-bundle ### -->
     </php>
 
     <testsuites>

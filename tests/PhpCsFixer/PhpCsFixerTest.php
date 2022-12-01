@@ -50,7 +50,7 @@ class PhpCsFixerTest extends TestCaseAbstract
 
         $executionResult = $this->process->exec(sprintf(
             'cd %s; vendor/bin/php-cs-fixer fix --config=%s --dry-run --verbose --path-mode=intersection -- %s',
-            escapeshellarg(__DIR__ . '/../../'),
+            escapeshellarg(__DIR__.'/../../'),
             escapeshellarg($configFilename),
             //$configFilename,
             implode(' ', array_map('escapeshellarg', $changedFiles))
@@ -98,7 +98,7 @@ class PhpCsFixerTest extends TestCaseAbstract
         $messages = [];
 
         // @see https://github.com/FriendsOfPHP/PHP-CS-Fixer#exit-codes
-        if ($exitCode === 1) {
+        if (1 === $exitCode) {
             return "General error (or PHP minimal requirement not matched).\n{$stdErr}\n";
         }
 
@@ -107,7 +107,7 @@ class PhpCsFixerTest extends TestCaseAbstract
         }
 
         if ($exitCode & FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_CHANGED_FILES) {
-            $analyzer = new PhpCsFixerFilesAnalyzer(__DIR__ . '/../../' . $configFilename);
+            $analyzer = new PhpCsFixerFilesAnalyzer(__DIR__.'/../../'.$configFilename);
 
             $messages[] = 'Some files need fixing.';
             $messages[] = $this->reformatPhpCsFixerStdOut($analyzer, $consoleCommand->getStandardOutputLines());
@@ -131,7 +131,7 @@ class PhpCsFixerTest extends TestCaseAbstract
             return "PHP error.\n{$stdErr}\n";
         }
 
-        return implode("\n", $messages) . "\n";
+        return implode("\n", $messages)."\n";
     }
 
     /**
@@ -157,7 +157,7 @@ class PhpCsFixerTest extends TestCaseAbstract
         $i = 1;
         foreach ($standardOutputLines as $line) {
             if (preg_match('/^\s*\d+\)\s(.+)\s\((.+)\)/', $line, $matches)) {
-                $filePath  = $matches[1];
+                $filePath = $matches[1];
                 $ruleNames = explode(',', $matches[2]);
                 $ruleNames = array_map('trim', $ruleNames);
 
@@ -186,7 +186,7 @@ class PhpCsFixerTest extends TestCaseAbstract
                     $result .= "\n";
                     $result .= PhpCsFixerFilesAnalyzer::convertDiffToString($diffGroups);
 
-                    $i++;
+                    ++$i;
                 }
             } else {
                 $result .= "{$line}\n";
